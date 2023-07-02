@@ -2,13 +2,27 @@ use glam::DVec3;
 use image::Rgb;
 
 pub struct Ray {
-    pub origin: DVec3,
-    pub direction: DVec3,
+    origin: DVec3,
+    direction: DVec3,
+    time_min: f64,
+    time_max: f64,
 }
 
 impl Ray {
-    pub fn at(&self, t: f64) -> DVec3 {
+    pub fn origin(&self) -> &DVec3 {
+        &self.origin
+    }
+
+    pub fn direction(&self) -> &DVec3 {
+        &self.direction
+    }
+
+    pub fn at_unchecked(&self, t: f64) -> DVec3 {
         self.origin + t * self.direction
+    }
+
+    pub fn exists_at(&self, time: f64) -> bool {
+        self.time_min <= time && time <= self.time_max
     }
 
     pub fn color(&self) -> Rgb<u8> {
@@ -31,4 +45,5 @@ impl Ray {
 
 pub struct HitResult {
     pub normal: DVec3,
+    pub time: f64,
 }

@@ -3,11 +3,12 @@ use image::{Rgb, RgbImage};
 use rayon::prelude::{ParallelBridge, ParallelIterator};
 
 mod camera;
+mod hittable;
 mod ray;
-mod shape;
+mod scene;
 use camera::Camera;
+use hittable::{Hittable, Sphere};
 use ray::{HitResult, Ray};
-use shape::{Hittable, Sphere};
 
 pub struct Render {
     width: u32,
