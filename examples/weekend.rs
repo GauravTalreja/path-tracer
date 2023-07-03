@@ -1,4 +1,4 @@
-use path_tracer::prelude::*;
+use path_tracer::*;
 
 fn main() -> Result<(), image::ImageError> {
     let ground = Arc::new(material::Lambertian {

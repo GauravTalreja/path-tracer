@@ -1,7 +1,5 @@
 mod sphere;
-pub mod prelude {
-    pub use super::sphere::Sphere;
-}
+pub use sphere::Sphere;
 
 mod impl_prelude {
     pub use crate::hittable::*;

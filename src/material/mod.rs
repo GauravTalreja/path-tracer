@@ -1,9 +1,7 @@
 mod lambertian;
 mod metal;
-pub mod prelude {
-    pub use super::lambertian::Lambertian;
-    pub use super::metal::Metal;
-}
+pub use lambertian::Lambertian;
+pub use metal::Metal;
 
 use super::{
     color::Color,
