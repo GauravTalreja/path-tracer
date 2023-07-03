@@ -3,11 +3,16 @@ use super::impl_prelude::*;
 pub struct Sphere {
     radius: f64,
     center: DVec3,
+    material: Arc<dyn Material>,
 }
 
 impl Sphere {
-    pub fn new(radius: f64, center: DVec3) -> Self {
-        Sphere { radius, center }
+    pub fn new(radius: f64, center: DVec3, material: Arc<dyn Material>) -> Self {
+        Sphere {
+            radius,
+            center,
+            material,
+        }
     }
 }
 
@@ -35,6 +40,7 @@ impl Hittable for Sphere {
             normal,
             time,
             point,
+            material: Arc::downgrade(&self.material),
         })
     }
 }

@@ -1,4 +1,6 @@
+use super::material::Material;
 use glam::DVec3;
+use std::sync::Weak;
 
 pub struct Ray {
     origin: DVec3,
@@ -46,4 +48,5 @@ pub struct HitResult {
     pub normal: DVec3,
     pub time: f64,
     pub point: DVec3,
+    pub material: Weak<dyn Material>,
 }

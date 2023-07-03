@@ -1,11 +1,12 @@
-use glam::DVec3;
-use rayon::prelude::{IntoParallelRefIterator, ParallelIterator};
-
 use super::{
+    color::Color,
     hittable::Hittable,
+    material::Scatter,
     ray::{HitResult, Ray},
     rng::RandomNumberGenerator,
 };
+use glam::DVec3;
+use rayon::prelude::{IntoParallelRefIterator, ParallelIterator};
 
 pub struct Scene {
     pub hittables: Vec<Box<dyn Hittable>>,
@@ -19,15 +20,19 @@ impl Scene {
             .min_by(|x, y| x.time.partial_cmp(&y.time).unwrap())
     }
 
-    pub fn color(&self, ray: &Ray, depth: u64, rng: &RandomNumberGenerator) -> DVec3 {
+    pub fn color(&self, ray: &Ray, depth: u64, rng: &RandomNumberGenerator) -> Color {
         if depth == 0 {
             return DVec3::ZERO;
         }
         match self.closest_hit(ray) {
-            Some(HitResult { normal, point, .. }) => {
-                let target = point + rng.in_hemishphere(&normal);
-                let ray = Ray::new(point, target - point, ray.time_min(), ray.time_max());
-                return 0.5 * self.color(&ray, depth - 1, rng);
+            Some(hit_result) => {
+                let material = hit_result.material.upgrade().unwrap();
+                match material.scatter(ray, &hit_result, rng) {
+                    Some(Scatter { ray, attenuation }) => {
+                        attenuation * self.color(&ray, depth - 1, rng)
+                    }
+                    None => Color::ZERO,
+                }
             }
             None => {
                 let unit_direction = ray.direction().normalize();

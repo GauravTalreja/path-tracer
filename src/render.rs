@@ -1,5 +1,4 @@
-use super::{camera::Camera, rng::RandomNumberGenerator, scene::Scene};
-use glam::DVec3;
+use super::{camera::Camera, color::*, rng::RandomNumberGenerator, scene::Scene};
 use image::{Rgb, RgbImage};
 use rand::{prelude::Distribution, thread_rng};
 use rayon::prelude::*;
@@ -32,8 +31,8 @@ impl Render {
     }
 
     fn get_color(&self, x: u32, y: u32) -> Rgb<u8> {
-        self.to_color(
-            &(0..self.samples)
+        to_rgb(
+            &((0..self.samples)
                 .into_par_iter()
                 .map(|_| {
                     let mut rng = thread_rng();
@@ -44,7 +43,8 @@ impl Render {
                     let r = self.camera.get_ray(u, v);
                     self.scene.color(&r, 50, &self.rng)
                 })
-                .sum::<DVec3>(),
+                .sum::<Color>()
+                / self.samples as f64),
         )
     }
 
@@ -55,16 +55,5 @@ impl Render {
             .par_bridge()
             .for_each(|(x, y, pixel)| *pixel = self.get_color(x, y));
         image
-    }
-
-    fn to_color(&self, DVec3 { x, y, z }: &DVec3) -> Rgb<u8> {
-        let scale = 1. / self.samples as f64;
-        let r = (scale * x).sqrt();
-        let g = (scale * y).sqrt();
-        let b = (scale * z).sqrt();
-        let r = (256. * r.clamp(0., 1.)) as u8;
-        let g = (256. * g.clamp(0., 1.)) as u8;
-        let b = (256. * b.clamp(0., 1.)) as u8;
-        Rgb([r, g, b])
     }
 }

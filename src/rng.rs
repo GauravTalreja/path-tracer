@@ -31,9 +31,9 @@ impl RandomNumberGenerator {
     pub fn in_hemishphere(&self, normal: &DVec3) -> DVec3 {
         let in_unit_sphere = self.in_unit_sphere();
         if in_unit_sphere.dot(*normal) > 0. {
-            return in_unit_sphere;
+            in_unit_sphere
         } else {
-            return -in_unit_sphere;
+            -in_unit_sphere
         }
     }
 }
