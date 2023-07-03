@@ -11,25 +11,10 @@ pub struct Camera {
 impl Camera {
     pub fn new(viewport_height: f64, viewport_width: f64, focal_length: f64) -> Self {
         let origin = DVec3::ZERO;
-        let horizontal = DVec3 {
-            x: viewport_width,
-            y: 0.0,
-            z: 0.0,
-        };
-        let vertical = DVec3 {
-            x: 0.0,
-            y: viewport_height,
-            z: 0.0,
-        };
-        let lower_left_corner = origin
-            - horizontal / 2.
-            - vertical / 2.
-            - DVec3 {
-                x: 0.0,
-                y: 0.0,
-                z: focal_length,
-            };
-
+        let horizontal = DVec3::new(viewport_width, 0., 0.);
+        let vertical = DVec3::new(0., viewport_height, 0.);
+        let lower_left_corner =
+            origin - (horizontal + vertical) / 2. - DVec3::new(0., 0., focal_length);
         Self {
             origin,
             horizontal,

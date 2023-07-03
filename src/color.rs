@@ -1,6 +1,12 @@
 use image::Rgb;
-
 pub type Color = glam::DVec3;
+
+pub fn hex_color(x: u32) -> Color {
+    let r = ((x >> 16) & 0xff) as f64 / 255.0;
+    let g = ((x >> 8) & 0xff) as f64 / 255.0;
+    let b = (x & 0xff) as f64 / 255.0;
+    Color::new(r.powi(2), g.powi(2), b.powi(2))
+}
 
 pub fn to_rgb(Color { x: r, y: g, z: b }: &Color) -> Rgb<u8> {
     let r = r.sqrt();

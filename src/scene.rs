@@ -5,7 +5,6 @@ use super::{
     ray::{HitResult, Ray},
     rng::RandomNumberGenerator,
 };
-use glam::DVec3;
 use rayon::prelude::{IntoParallelRefIterator, ParallelIterator};
 
 pub struct Scene {
@@ -22,7 +21,7 @@ impl Scene {
 
     pub fn color(&self, ray: &Ray, depth: u64, rng: &RandomNumberGenerator) -> Color {
         if depth == 0 {
-            return DVec3::ZERO;
+            return Color::ZERO;
         }
         match self.closest_hit(ray) {
             Some(hit_result) => {
@@ -37,12 +36,7 @@ impl Scene {
             None => {
                 let unit_direction = ray.direction().normalize();
                 let t = 0.5 * (-unit_direction.y + 1.0);
-                (1.0 - t) * DVec3::splat(1.)
-                    + t * DVec3 {
-                        x: 0.5,
-                        y: 0.7,
-                        z: 1.0,
-                    }
+                (1.0 - t) * Color::splat(1.) + t * Color::new(0.5, 0.7, 1.0)
             }
         }
     }

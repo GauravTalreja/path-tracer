@@ -8,7 +8,7 @@ mod rng;
 mod scene;
 
 pub mod prelude {
-    pub use super::color::Color;
+    pub use super::color::{hex_color, Color};
     pub use super::hittable::prelude as hittable;
     pub use super::material::prelude as material;
     pub use super::render::Render;
