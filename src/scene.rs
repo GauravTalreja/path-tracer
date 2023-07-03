@@ -1,7 +1,6 @@
-use rayon::{
-    prelude::{IntoParallelRefIterator, ParallelIterator},
-    slice::ParallelSliceMut,
-};
+use glam::DVec3;
+use image::Rgb;
+use rayon::prelude::{IntoParallelRefIterator, ParallelIterator};
 
 use crate::{
     hittable::Hittable,
@@ -14,25 +13,49 @@ pub struct Scene {
 
 impl Scene {
     fn hit(&self, ray: &Ray) -> Option<HitResult> {
-        let mut closest = None;
-        let hit_results = self
-            .hittables
-            .par_iter()
-            .map(|h| h.hit(ray))
-            .for_each(|hit| {
-                if let Some(HitResult {
-                    time: time_closest, ..
-                }) = closest
-                {
-                    if let Some(HitResult { time, .. }) = hit {
-                        if time < time_closest {
-                            closest = hit;
-                        }
-                    }
-                } else {
-                    closest = hit;
-                }
-            });
-        closest
+        self.hittables.par_iter().map(|h| h.hit(ray)).reduce(
+            || None,
+            |a, b| match a {
+                Some(HitResult { time: time_a, .. }) => match b {
+                    Some(HitResult { time: time_b, .. }) => match time_a < time_b {
+                        true => a,
+                        false => b,
+                    },
+                    None => a,
+                },
+                None => b,
+            },
+        )
     }
+
+    pub fn color(&self, ray: &Ray) -> Rgb<u8> {
+        if let Some(HitResult { normal, .. }) = self.hit(ray) {
+            return to_color(
+                &(0.5
+                    * DVec3 {
+                        x: 1. + normal.x,
+                        y: 1. - normal.y,
+                        z: 1. + normal.z,
+                    }),
+            );
+        }
+        let unit_direction = ray.direction().normalize();
+        let t = 0.5 * (unit_direction.y + 1.0);
+        to_color(
+            &(t * DVec3::splat(1.)
+                + (1.0 - t)
+                    * DVec3 {
+                        x: 0.5,
+                        y: 0.7,
+                        z: 1.0,
+                    }),
+        )
+    }
+}
+
+fn to_color(DVec3 { x, y, z }: &DVec3) -> Rgb<u8> {
+    let r = (255.999 * x) as u8;
+    let g = (255.999 * y) as u8;
+    let b = (255.999 * z) as u8;
+    Rgb([r, g, b])
 }
