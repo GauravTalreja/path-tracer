@@ -1,11 +1,4 @@
-use glam::DVec3;
-
-use super::{Material, Scatter};
-use crate::{
-    color::Color,
-    ray::{HitResult, Ray},
-    rng::RandomNumberGenerator,
-};
+use super::impl_prelude::*;
 
 pub struct Metal {
     pub albedo: Color,
@@ -17,12 +10,12 @@ impl Material for Metal {
         &self,
         ray: &Ray,
         HitResult { normal, point, .. }: &HitResult,
-        _rng: &RandomNumberGenerator,
+        rng: &RandomNumberGenerator,
     ) -> Option<Scatter> {
         let reflected = reflect(ray.direction().normalize(), *normal);
         let ray = Ray::new(
             *point,
-            reflected + self.fuzz * _rng.in_unit_sphere(),
+            reflected + self.fuzz * rng.in_unit_sphere(),
             ray.time_min(),
             ray.time_max(),
         );
@@ -34,8 +27,4 @@ impl Material for Metal {
             false => None,
         }
     }
-}
-
-fn reflect(v: DVec3, normal: DVec3) -> DVec3 {
-    v - 2. * v.dot(normal) * normal
 }

@@ -9,20 +9,24 @@ fn main() -> Result<(), image::ImageError> {
         albedo: hex_color(0xf5c2e7),
     });
 
-    let left = Arc::new(material::Metal {
-        albedo: hex_color(0xf38ba8),
-        fuzz: 0.3,
+    let left = Arc::new(material::Dielectric {
+        refractive_index: 1.5,
     });
 
     let right = Arc::new(material::Metal {
         albedo: hex_color(0xcba6f7),
-        fuzz: 1.,
+        fuzz: 0.,
     });
 
     let scene = Scene {
         hittables: vec![
             Box::new(hittable::Sphere::new(0.5, DVec3::new(0., 0., -1.), center)),
-            Box::new(hittable::Sphere::new(0.5, DVec3::new(-1., 0., -1.), left)),
+            Box::new(hittable::Sphere::new(
+                0.5,
+                DVec3::new(-1., 0., -1.),
+                left.clone(),
+            )),
+            Box::new(hittable::Sphere::new(-0.4, DVec3::new(-1., 0., -1.), left)),
             Box::new(hittable::Sphere::new(0.5, DVec3::new(1., 0., -1.), right)),
             Box::new(hittable::Sphere::new(
                 100.,

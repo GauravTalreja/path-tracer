@@ -1,9 +1,4 @@
-use super::{Material, Scatter};
-use crate::{
-    color::Color,
-    ray::{HitResult, Ray},
-    rng::RandomNumberGenerator,
-};
+use super::impl_prelude::*;
 
 pub struct Lambertian {
     pub albedo: Color,
