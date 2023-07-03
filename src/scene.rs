@@ -13,19 +13,10 @@ pub struct Scene {
 
 impl Scene {
     fn hit(&self, ray: &Ray) -> Option<HitResult> {
-        self.hittables.par_iter().map(|h| h.hit(ray)).reduce(
-            || None,
-            |a, b| match a {
-                Some(HitResult { time: time_a, .. }) => match b {
-                    Some(HitResult { time: time_b, .. }) => match time_a < time_b {
-                        true => a,
-                        false => b,
-                    },
-                    None => a,
-                },
-                None => b,
-            },
-        )
+        self.hittables
+            .par_iter()
+            .filter_map(|h| h.hit(ray))
+            .min_by(|x, y| x.time.partial_cmp(&y.time).unwrap())
     }
 
     pub fn color(&self, ray: &Ray) -> Rgb<u8> {
