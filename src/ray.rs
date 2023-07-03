@@ -25,6 +25,14 @@ impl Ray {
         &self.direction
     }
 
+    pub fn time_min(&self) -> f64 {
+        self.time_min
+    }
+
+    pub fn time_max(&self) -> f64 {
+        self.time_max
+    }
+
     pub fn at_unchecked(&self, t: f64) -> DVec3 {
         self.origin + t * self.direction
     }
@@ -37,4 +45,5 @@ impl Ray {
 pub struct HitResult {
     pub normal: DVec3,
     pub time: f64,
+    pub point: DVec3,
 }

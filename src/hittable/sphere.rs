@@ -29,7 +29,12 @@ impl Hittable for Sphere {
                 return None;
             }
         }
-        let normal = (ray.at_unchecked(time) - self.center) / self.radius;
-        Some(HitResult { normal, time })
+        let point = ray.at_unchecked(time);
+        let normal = (point - self.center) / self.radius;
+        Some(HitResult {
+            normal,
+            time,
+            point,
+        })
     }
 }

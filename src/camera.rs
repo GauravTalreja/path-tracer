@@ -42,7 +42,7 @@ impl Camera {
         Ray::new(
             self.origin,
             self.lower_left_corner + self.horizontal * u + self.vertical * v - self.origin,
-            0.,
+            0.001,
             f64::INFINITY,
         )
     }

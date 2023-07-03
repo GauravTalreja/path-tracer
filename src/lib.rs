@@ -2,6 +2,7 @@ mod camera;
 pub mod hittable;
 mod ray;
 mod render;
+mod rng;
 mod scene;
 
 pub use render::Render;
