@@ -40,22 +40,21 @@ impl Scene {
             );
         }
         let unit_direction = ray.direction().normalize();
-        let t = 0.5 * (unit_direction.y + 1.0);
+        let t = 0.5 * (-unit_direction.y + 1.0);
         to_color(
-            &(t * DVec3::splat(1.)
-                + (1.0 - t)
-                    * DVec3 {
-                        x: 0.5,
-                        y: 0.7,
-                        z: 1.0,
-                    }),
+            &((1.0 - t) * DVec3::splat(1.)
+                + t * DVec3 {
+                    x: 0.5,
+                    y: 0.7,
+                    z: 1.0,
+                }),
         )
     }
 }
 
 fn to_color(DVec3 { x, y, z }: &DVec3) -> Rgb<u8> {
-    let r = (255.999 * x) as u8;
-    let g = (255.999 * y) as u8;
-    let b = (255.999 * z) as u8;
+    let r = (256. * x.clamp(0., 1.)) as u8;
+    let g = (256. * y.clamp(0., 1.)) as u8;
+    let b = (256. * z.clamp(0., 1.)) as u8;
     Rgb([r, g, b])
 }
