@@ -1,11 +1,7 @@
-use std::ops::Div;
-
+use super::ray::Ray;
 use glam::DVec3;
 
 pub struct Camera {
-    height: f64,
-    width: f64,
-    focal_length: f64,
     origin: DVec3,
     horizontal: DVec3,
     vertical: DVec3,
@@ -14,8 +10,6 @@ pub struct Camera {
 
 impl Camera {
     pub fn new(viewport_height: f64, viewport_width: f64, focal_length: f64) -> Self {
-        let height = viewport_height;
-        let width = viewport_width;
         let origin = DVec3::ZERO;
         let horizontal = DVec3 {
             x: viewport_width,
@@ -28,8 +22,8 @@ impl Camera {
             z: 0.0,
         };
         let lower_left_corner = origin
-            - horizontal.div(2.0)
-            - vertical.div(2.0)
+            - horizontal / 2.
+            - vertical / 2.
             - DVec3 {
                 x: 0.0,
                 y: 0.0,
@@ -37,9 +31,6 @@ impl Camera {
             };
 
         Self {
-            height,
-            width,
-            focal_length,
             origin,
             horizontal,
             vertical,
@@ -47,19 +38,12 @@ impl Camera {
         }
     }
 
-    pub fn origin(&self) -> &DVec3 {
-        &self.origin
-    }
-
-    pub fn horizontal(&self) -> &DVec3 {
-        &self.horizontal
-    }
-
-    pub fn vertical(&self) -> &DVec3 {
-        &self.vertical
-    }
-
-    pub fn lower_left_corner(&self) -> &DVec3 {
-        &self.lower_left_corner
+    pub fn get_ray(&self, u: f64, v: f64) -> Ray {
+        Ray::new(
+            self.origin,
+            self.lower_left_corner + self.horizontal * u + self.vertical * v - self.origin,
+            0.,
+            f64::INFINITY,
+        )
     }
 }
