@@ -12,6 +12,6 @@ fn main() -> Result<(), image::ImageError> {
     let aspect_ratio = WIDTH as f64 / HEIGHT as f64;
     let camera = Camera::new(look_from, look_at, vup, 20., aspect_ratio, 0.1, 10.);
 
-    let image = Render::new(2560, 1440, 100, scene, camera).to_image();
+    let image = Render::new(WIDTH, HEIGHT, 100, scene, camera).to_image();
     image.save_with_format("output.png", image::ImageFormat::Png)
 }
