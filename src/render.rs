@@ -13,12 +13,13 @@ pub struct Render {
 }
 
 impl Render {
-    pub fn new(width: u32, height: u32, samples_per_pixel: u64, scene: Scene) -> Self {
-        let viewport_height = 2.0;
-        let aspect_ratio = width as f64 / height as f64;
-        let viewport_width = aspect_ratio * viewport_height;
-        let focal_length = 1.0;
-        let camera = Camera::new(viewport_height, viewport_width, focal_length);
+    pub fn new(
+        width: u32,
+        height: u32,
+        samples_per_pixel: u64,
+        scene: Scene,
+        camera: Camera,
+    ) -> Self {
         let rng = RandomNumberGenerator::new();
         Render {
             width,
