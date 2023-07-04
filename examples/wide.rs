@@ -25,6 +25,8 @@ fn main() -> Result<(), image::ImageError> {
         DVec3::new(0., 1., 0.),
         90.,
         aspect_ratio,
+        0.,
+        1.,
     );
 
     let image = Render::new(2560, 1440, 100, scene, camera).to_image();
