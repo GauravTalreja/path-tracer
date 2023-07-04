@@ -5,8 +5,6 @@ use super::{
     ray::{HitResult, Ray},
     rng::RandomNumberGenerator,
 };
-use rayon::prelude::{IntoParallelRefIterator, ParallelIterator};
-
 pub struct Scene {
     pub hittables: Vec<Box<dyn Hittable>>,
 }
@@ -14,7 +12,7 @@ pub struct Scene {
 impl Scene {
     fn closest_hit(&self, ray: &Ray) -> Option<HitResult> {
         self.hittables
-            .par_iter()
+            .iter()
             .filter_map(|h| h.hit(ray))
             .min_by(|x, y| x.time.partial_cmp(&y.time).unwrap())
     }
