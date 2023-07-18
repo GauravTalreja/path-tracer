@@ -1,12 +1,13 @@
 use super::{camera::Camera, color::*, rng::RandomNumberGenerator, scene::Scene};
 use image::{Rgb, RgbImage};
-use rand::{prelude::Distribution, thread_rng};
+use indicatif::ParallelProgressIterator;
+use rand::prelude::*;
 use rayon::prelude::*;
 
 pub struct Render {
     width: u32,
     height: u32,
-    samples: u64,
+    samples_per_pixel: u64,
     camera: Camera,
     scene: Scene,
     rng: RandomNumberGenerator,
@@ -24,7 +25,7 @@ impl Render {
         Render {
             width,
             height,
-            samples: samples_per_pixel,
+            samples_per_pixel,
             camera,
             scene,
             rng,
@@ -33,7 +34,7 @@ impl Render {
 
     fn get_color(&self, x: u32, y: u32) -> Rgb<u8> {
         to_rgb(
-            &((0..self.samples)
+            &((0..self.samples_per_pixel)
                 .into_par_iter()
                 .map(|_| {
                     let mut rng = thread_rng();
@@ -45,7 +46,7 @@ impl Render {
                     self.scene.color(&r, 50, &self.rng)
                 })
                 .sum::<Color>()
-                / self.samples as f64),
+                / self.samples_per_pixel as f64),
         )
     }
 
@@ -54,6 +55,7 @@ impl Render {
         let _ = image
             .enumerate_pixels_mut()
             .par_bridge()
+            .progress_count((self.width * self.height) as u64)
             .for_each(|(x, y, pixel)| *pixel = self.get_color(x, y));
         image
     }
