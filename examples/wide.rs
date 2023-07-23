@@ -1,7 +1,7 @@
 use path_tracer::*;
 use std::f64::consts::PI;
-const WIDTH: u32 = 2560;
-const HEIGHT: u32 = 1440;
+const WIDTH: u32 = 1280;
+const HEIGHT: u32 = 720;
 
 fn main() -> Result<(), image::ImageError> {
     let left = Arc::new(material::Lambertian {
@@ -29,6 +29,6 @@ fn main() -> Result<(), image::ImageError> {
         1.,
     );
 
-    let image = Render::new(2560, 1440, 100, scene, camera).to_image();
-    image.save_with_format("output.png", image::ImageFormat::Png)
+    let image = Render::new(WIDTH, HEIGHT, 100, scene, camera).to_image();
+    image.save_with_format("examples/wide.png", image::ImageFormat::Png)
 }

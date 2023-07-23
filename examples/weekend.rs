@@ -1,6 +1,6 @@
 use path_tracer::*;
-const WIDTH: u32 = 2560;
-const HEIGHT: u32 = 1440;
+const WIDTH: u32 = 1280;
+const HEIGHT: u32 = 720;
 
 fn main() -> Result<(), image::ImageError> {
     let rng = RandomNumberGenerator::new();
@@ -13,5 +13,5 @@ fn main() -> Result<(), image::ImageError> {
     let camera = Camera::new(look_from, look_at, vup, 20., aspect_ratio, 0.1, 10.);
 
     let image = Render::new(WIDTH, HEIGHT, 100, scene, camera).to_image();
-    image.save_with_format("output.png", image::ImageFormat::Png)
+    image.save_with_format("examples/weekend.png", image::ImageFormat::Png)
 }
