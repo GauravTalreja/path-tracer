@@ -14,3 +14,6 @@ pub use solid_color::SolidColor;
 
 mod checker;
 pub use checker::Checker;
+
+mod image;
+pub use self::image::Image;

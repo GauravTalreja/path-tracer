@@ -12,3 +12,8 @@
 |:--:| 
 | *Checker Texture* |
 | `cargo run --release --example checker` |
+
+| ![](examples/image_mapping.png)|
+|:--:| 
+| *Image Texture* |
+| `cargo run --release --example image_mapping` |

@@ -57,10 +57,12 @@ impl Sphere {
         }
     }
 
-    pub fn get_uv(&self, point: &DVec3) -> (f64, f64) {
-        let theta = -point.y.acos();
-        let phi = -point.z.atan2(point.x) + PI;
-        (phi / (2. * PI), theta / PI)
+    pub fn get_uv(point: &DVec3) -> (f64, f64) {
+        let phi = (-point.z).atan2(point.x) + PI;
+        let theta = (-point.y).acos();
+        let u = 1. - phi / (2. * PI);
+        let v = theta / PI;
+        (u, v)
     }
 }
 
@@ -85,7 +87,7 @@ impl Hittable for Sphere {
         }
         let point = ray.at(time);
         let normal: DVec3 = (point - center) / self.radius;
-        let (u, v) = self.get_uv(&normal);
+        let (u, v) = Sphere::get_uv(&normal);
         Some(HitResult {
             normal,
             time,
