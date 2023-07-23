@@ -4,6 +4,13 @@ pub struct Sphere {
     radius: f64,
     center: DVec3,
     material: Arc<dyn Material>,
+    moving_sphere: Option<MovingSphere>,
+}
+
+pub struct MovingSphere {
+    pub time_min: f64,
+    pub center: DVec3,
+    pub time_max: f64,
 }
 
 impl Sphere {
@@ -12,13 +19,48 @@ impl Sphere {
             radius,
             center,
             material,
+            moving_sphere: None,
+        }
+    }
+
+    pub fn new_moving(
+        radius: f64,
+        center: DVec3,
+        material: Arc<dyn Material>,
+        time_min: f64,
+        time_max: f64,
+        center_final: DVec3,
+    ) -> Self {
+        Sphere {
+            radius,
+            center,
+            material,
+            moving_sphere: Some(MovingSphere {
+                time_min,
+                center: center_final,
+                time_max,
+            }),
+        }
+    }
+
+    pub fn center(&self, time: f64) -> DVec3 {
+        match self.moving_sphere {
+            Some(MovingSphere {
+                time_min,
+                center,
+                time_max,
+            }) => self
+                .center
+                .lerp(center, (time - time_min) / (time_max - time_min)),
+            None => self.center,
         }
     }
 }
 
 impl Hittable for Sphere {
     fn hit(&self, ray: &Ray, time_min: f64, time_max: f64) -> Option<HitResult> {
-        let oc = *ray.origin() - self.center;
+        let center = self.center(ray.time());
+        let oc = *ray.origin() - center;
         let a = ray.direction().length_squared();
         let half_b = oc.dot(*ray.direction());
         let c = oc.length_squared() - self.radius * self.radius;
@@ -35,7 +77,7 @@ impl Hittable for Sphere {
             }
         }
         let point = ray.at(time);
-        let normal = (point - self.center) / self.radius;
+        let normal = (point - center) / self.radius;
         Some(HitResult {
             normal,
             time,

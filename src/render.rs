@@ -43,7 +43,7 @@ impl Render {
                     let v = (y as f64 + self.rng.uniform_0_1.sample(&mut rng))
                         / (self.height - 1) as f64;
                     let r = self.camera.get_ray(u, v, &self.rng);
-                    self.scene.color(&r, 50, &self.rng)
+                    self.scene.color(&r, 50, &self.rng, 0.001, f64::INFINITY)
                 })
                 .sum::<Color>()
                 / self.samples_per_pixel as f64),

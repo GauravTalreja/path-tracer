@@ -19,8 +19,6 @@ fn main() -> Result<(), image::ImageError> {
             Box::new(hittable::Sphere::new(r, DVec3::new(-r, 0., -1.), left)),
             Box::new(hittable::Sphere::new(r, DVec3::new(r, 0., -1.), right)),
         ],
-        time_min: TIME_MIN,
-        time_max: TIME_MAX,
     };
 
     let aspect_ratio = WIDTH as f64 / HEIGHT as f64;

@@ -13,3 +13,14 @@ use impl_prelude::*;
 pub trait Hittable: Send + Sync {
     fn hit(&self, ray: &Ray, time_min: f64, time_max: f64) -> Option<HitResult>;
 }
+
+pub struct BoundingBox {
+    pub minimum: DVec3,
+    pub maximum: DVec3,
+}
+
+impl Hittable for BoundingBox {
+    fn hit(&self, ray: &Ray, time_min: f64, time_max: f64) -> Option<HitResult> {
+        todo!()
+    }
+}
