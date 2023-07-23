@@ -21,7 +21,7 @@ impl Render {
         scene: Scene,
         camera: Camera,
     ) -> Self {
-        let rng = RandomNumberGenerator::new();
+        let rng = RandomNumberGenerator::new(camera.time_min, camera.time_max);
         Render {
             width,
             height,

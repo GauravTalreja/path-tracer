@@ -1,7 +1,10 @@
 use path_tracer::*;
 use std::f64::consts::PI;
+
 const WIDTH: u32 = 1280;
 const HEIGHT: u32 = 720;
+const TIME_MIN: f64 = 0.001;
+const TIME_MAX: f64 = f64::MAX;
 
 fn main() -> Result<(), image::ImageError> {
     let left = Arc::new(material::Lambertian {
@@ -16,6 +19,8 @@ fn main() -> Result<(), image::ImageError> {
             Box::new(hittable::Sphere::new(r, DVec3::new(-r, 0., -1.), left)),
             Box::new(hittable::Sphere::new(r, DVec3::new(r, 0., -1.), right)),
         ],
+        time_min: TIME_MIN,
+        time_max: TIME_MAX,
     };
 
     let aspect_ratio = WIDTH as f64 / HEIGHT as f64;
@@ -27,6 +32,8 @@ fn main() -> Result<(), image::ImageError> {
         aspect_ratio,
         0.,
         1.,
+        TIME_MIN,
+        TIME_MAX,
     );
 
     let image = Render::new(WIDTH, HEIGHT, 100, scene, camera).to_image();

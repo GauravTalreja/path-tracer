@@ -7,13 +7,15 @@ use super::{
 };
 pub struct Scene {
     pub hittables: Vec<Box<dyn Hittable>>,
+    pub time_min: f64,
+    pub time_max: f64,
 }
 
 impl Scene {
-    fn closest_hit(&self, ray: &Ray) -> Option<HitResult> {
+    fn closest_hit(&self, ray: &Ray, time_min: f64, time_max: f64) -> Option<HitResult> {
         self.hittables
             .iter()
-            .filter_map(|h| h.hit(ray))
+            .filter_map(|h| h.hit(ray, time_min, time_max))
             .min_by(|x, y| x.time.partial_cmp(&y.time).unwrap())
     }
 
@@ -21,7 +23,7 @@ impl Scene {
         if depth == 0 {
             return Color::ZERO;
         }
-        match self.closest_hit(ray) {
+        match self.closest_hit(ray, self.time_min, self.time_max) {
             Some(hit_result) => {
                 let material = hit_result.material.upgrade().unwrap();
                 match material.scatter(ray, &hit_result, rng) {

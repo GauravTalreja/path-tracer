@@ -62,6 +62,10 @@ impl Scene {
             }
         }
 
-        Scene { hittables }
+        Scene {
+            hittables,
+            time_min: 0.001,
+            time_max: f64::MAX,
+        }
     }
 }

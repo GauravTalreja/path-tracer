@@ -9,6 +9,8 @@ pub struct Camera {
     u: DVec3,
     v: DVec3,
     lens_radius: f64,
+    pub time_min: f64,
+    pub time_max: f64,
 }
 
 impl Camera {
@@ -20,6 +22,8 @@ impl Camera {
         aspect_ratio: f64,
         aperture: f64,
         focus_distance: f64,
+        time_min: f64,
+        time_max: f64,
     ) -> Self {
         let theta = vfov.to_radians() / 2.;
         let h = theta.tan();
@@ -42,6 +46,8 @@ impl Camera {
             u,
             v,
             lens_radius,
+            time_min,
+            time_max,
         }
     }
 
@@ -51,8 +57,7 @@ impl Camera {
         Ray::new(
             self.origin + offset,
             self.lower_left_corner + self.horizontal * s + self.vertical * t - self.origin - offset,
-            0.001,
-            f64::INFINITY,
+            rng.time(),
         )
     }
 }

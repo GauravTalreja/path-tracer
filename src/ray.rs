@@ -5,17 +5,15 @@ use std::sync::Weak;
 pub struct Ray {
     origin: DVec3,
     direction: DVec3,
-    time_min: f64,
-    time_max: f64,
+    time: f64,
 }
 
 impl Ray {
-    pub fn new(origin: DVec3, direction: DVec3, time_min: f64, time_max: f64) -> Self {
+    pub fn new(origin: DVec3, direction: DVec3, time: f64) -> Self {
         Self {
             origin,
             direction,
-            time_min,
-            time_max,
+            time,
         }
     }
 
@@ -27,20 +25,12 @@ impl Ray {
         &self.direction
     }
 
-    pub fn time_min(&self) -> f64 {
-        self.time_min
+    pub fn time(&self) -> f64 {
+        self.time
     }
 
-    pub fn time_max(&self) -> f64 {
-        self.time_max
-    }
-
-    pub fn at_unchecked(&self, t: f64) -> DVec3 {
+    pub fn at(&self, t: f64) -> DVec3 {
         self.origin + t * self.direction
-    }
-
-    pub fn exists_at(&self, time: f64) -> bool {
-        self.time_min <= time && time <= self.time_max
     }
 }
 

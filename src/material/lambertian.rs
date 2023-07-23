@@ -12,7 +12,7 @@ impl Material for Lambertian {
         rng: &RandomNumberGenerator,
     ) -> Option<Scatter> {
         let direction = rng.in_hemishphere(normal);
-        let ray = Ray::new(*point, direction, ray.time_min(), ray.time_max());
+        let ray = Ray::new(*point, direction, ray.time());
         let attenuation = self.albedo;
         Some(Scatter { ray, attenuation })
     }

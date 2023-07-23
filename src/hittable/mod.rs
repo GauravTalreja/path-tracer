@@ -11,5 +11,5 @@ mod impl_prelude {
 use impl_prelude::*;
 
 pub trait Hittable: Send + Sync {
-    fn hit(&self, ray: &Ray) -> Option<HitResult>;
+    fn hit(&self, ray: &Ray, time_min: f64, time_max: f64) -> Option<HitResult>;
 }

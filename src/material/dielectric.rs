@@ -31,7 +31,7 @@ impl Material for Dielectric {
         } else {
             refract(direction, normal, refraction_ratio)
         };
-        let ray = Ray::new(*point, direction, ray.time_min(), ray.time_max());
+        let ray = Ray::new(*point, direction, ray.time());
         Some(Scatter { ray, attenuation })
     }
 }

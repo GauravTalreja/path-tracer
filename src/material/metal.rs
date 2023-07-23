@@ -16,8 +16,7 @@ impl Material for Metal {
         let ray = Ray::new(
             *point,
             reflected + self.fuzz * rng.in_unit_sphere(),
-            ray.time_min(),
-            ray.time_max(),
+            ray.time(),
         );
         match ray.direction().dot(*normal) > 0. {
             true => Some(Scatter {

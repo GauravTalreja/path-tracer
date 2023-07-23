@@ -6,11 +6,21 @@ use crate::Color;
 pub struct RandomNumberGenerator {
     pub uniform_0_1: Uniform<f64>,
     pub uniform_minus_1_1: Uniform<f64>,
+    pub uniform_time: Uniform<f64>,
 }
 
 impl RandomNumberGenerator {
-    pub fn new() -> Self {
-        Self::default()
+    pub fn new(time_min: f64, time_max: f64) -> Self {
+        Self {
+            uniform_0_1: Uniform::new(0., 1.),
+            uniform_minus_1_1: Uniform::new(-1., 1.),
+            uniform_time: Uniform::new(time_min, time_max),
+        }
+    }
+
+    pub fn time(&self) -> f64 {
+        let mut rng = thread_rng();
+        self.uniform_time.sample(&mut rng)
     }
 
     pub fn in_unit_cube(&self) -> DVec3 {
@@ -63,14 +73,5 @@ impl RandomNumberGenerator {
             self.uniform_0_1.sample(&mut rng),
             self.uniform_0_1.sample(&mut rng),
         )
-    }
-}
-
-impl Default for RandomNumberGenerator {
-    fn default() -> Self {
-        Self {
-            uniform_0_1: Uniform::new(0., 1.),
-            uniform_minus_1_1: Uniform::new(-1., 1.),
-        }
     }
 }
