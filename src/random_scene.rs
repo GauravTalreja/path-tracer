@@ -20,19 +20,19 @@ impl Scene {
             albedo: Color::new(0.7, 0.6, 0.5),
             fuzz: 0.,
         });
-        let mut hittables: Vec<Box<dyn hittable::Hittable>> = vec![
-            Box::new(hittable::Sphere::new(
+        let mut hittables: Vec<Arc<dyn hittable::Hittable>> = vec![
+            Arc::new(hittable::Sphere::new(
                 1000.,
                 DVec3::new(0., 1000., 0.),
                 ground,
             )),
-            Box::new(hittable::Sphere::new(
+            Arc::new(hittable::Sphere::new(
                 1.,
                 DVec3::new(0., -1., 0.),
                 glass.clone(),
             )),
-            Box::new(hittable::Sphere::new(1., DVec3::new(-4., -1., 0.), mat2)),
-            Box::new(hittable::Sphere::new(1., DVec3::new(4., -1., 0.), mat3)),
+            Arc::new(hittable::Sphere::new(1., DVec3::new(-4., -1., 0.), mat2)),
+            Arc::new(hittable::Sphere::new(1., DVec3::new(4., -1., 0.), mat3)),
         ];
 
         for a in -n..n {
@@ -46,7 +46,7 @@ impl Scene {
                 if random < 0.8 {
                     let albedo = rng.color() * rng.color();
                     let material = Arc::new(material::Lambertian { albedo });
-                    hittables.push(Box::new(hittable::Sphere::new(0.2, center, material)));
+                    hittables.push(Arc::new(hittable::Sphere::new(0.2, center, material)));
                 } else if random < 0.95 {
                     let albedo = DVec3::new(
                         uniform_0_5_1.sample(thread_rng),
@@ -55,14 +55,14 @@ impl Scene {
                     );
                     let fuzz = uniform_0_0_5.sample(thread_rng);
                     let material = Arc::new(material::Metal { albedo, fuzz });
-                    hittables.push(Box::new(hittable::Sphere::new(0.2, center, material)));
+                    hittables.push(Arc::new(hittable::Sphere::new(0.2, center, material)));
                 } else {
-                    hittables.push(Box::new(hittable::Sphere::new(0.2, center, glass.clone())));
+                    hittables.push(Arc::new(hittable::Sphere::new(0.2, center, glass.clone())));
                 }
             }
         }
 
-        Scene { hittables }
+        Scene::new(&hittables, 0., 1.)
     }
 
     pub fn random_moving_spheres(
@@ -88,19 +88,19 @@ impl Scene {
             albedo: Color::new(0.7, 0.6, 0.5),
             fuzz: 0.,
         });
-        let mut hittables: Vec<Box<dyn hittable::Hittable>> = vec![
-            Box::new(hittable::Sphere::new(
+        let mut hittables: Vec<Arc<dyn hittable::Hittable>> = vec![
+            Arc::new(hittable::Sphere::new(
                 1000.,
                 DVec3::new(0., 1000., 0.),
                 ground,
             )),
-            Box::new(hittable::Sphere::new(
+            Arc::new(hittable::Sphere::new(
                 1.,
                 DVec3::new(0., -1., 0.),
                 glass.clone(),
             )),
-            Box::new(hittable::Sphere::new(1., DVec3::new(-4., -1., 0.), mat2)),
-            Box::new(hittable::Sphere::new(1., DVec3::new(4., -1., 0.), mat3)),
+            Arc::new(hittable::Sphere::new(1., DVec3::new(-4., -1., 0.), mat2)),
+            Arc::new(hittable::Sphere::new(1., DVec3::new(4., -1., 0.), mat3)),
         ];
 
         for a in -n..n {
@@ -116,7 +116,7 @@ impl Scene {
                     let material = Arc::new(material::Lambertian { albedo });
                     let center_final =
                         center + DVec3::new(0., -uniform_0_0_5.sample(thread_rng), 0.);
-                    hittables.push(Box::new(hittable::Sphere::new_moving(
+                    hittables.push(Arc::new(hittable::Sphere::new_moving(
                         0.2,
                         center,
                         material,
@@ -132,13 +132,13 @@ impl Scene {
                     );
                     let fuzz = uniform_0_0_5.sample(thread_rng);
                     let material = Arc::new(material::Metal { albedo, fuzz });
-                    hittables.push(Box::new(hittable::Sphere::new(0.2, center, material)));
+                    hittables.push(Arc::new(hittable::Sphere::new(0.2, center, material)));
                 } else {
-                    hittables.push(Box::new(hittable::Sphere::new(0.2, center, glass.clone())));
+                    hittables.push(Arc::new(hittable::Sphere::new(0.2, center, glass.clone())));
                 }
             }
         }
 
-        Scene { hittables }
+        Scene::new(&hittables, time_min, time_max)
     }
 }

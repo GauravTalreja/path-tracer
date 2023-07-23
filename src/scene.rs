@@ -1,20 +1,28 @@
 use super::{
     color::Color,
-    hittable::Hittable,
+    hittable::{BoundingBox, BvhNode, Hittable},
     material::Scatter,
     ray::{HitResult, Ray},
     rng::RandomNumberGenerator,
 };
+use std::sync::Arc;
 pub struct Scene {
-    pub hittables: Vec<Box<dyn Hittable>>,
+    bvh: BvhNode,
 }
 
 impl Scene {
-    fn closest_hit(&self, ray: &Ray, time_min: f64, time_max: f64) -> Option<HitResult> {
-        self.hittables
+    pub fn new(hittables: &[Arc<dyn Hittable>], time_min: f64, time_max: f64) -> Self {
+        let mut hittables: Vec<(Arc<dyn Hittable>, BoundingBox)> = hittables
             .iter()
-            .filter_map(|h| h.hit(ray, time_min, time_max))
-            .min_by(|x, y| x.time.partial_cmp(&y.time).unwrap())
+            .map(|h| (h.clone(), h.as_ref().bounding_box(time_min, time_max)))
+            .collect();
+        Self {
+            bvh: BvhNode::new(&mut hittables, time_min, time_max),
+        }
+    }
+
+    fn closest_hit(&self, ray: &Ray, time_min: f64, time_max: f64) -> Option<HitResult> {
+        self.bvh.hit(ray, time_min, time_max)
     }
 
     pub fn color(

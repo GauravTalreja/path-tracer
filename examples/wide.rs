@@ -14,12 +14,12 @@ fn main() -> Result<(), image::ImageError> {
         albedo: hex_color(0xf5c2e7),
     });
     let r = (PI / 4.).cos();
-    let scene = Scene {
-        hittables: vec![
-            Box::new(hittable::Sphere::new(r, DVec3::new(-r, 0., -1.), left)),
-            Box::new(hittable::Sphere::new(r, DVec3::new(r, 0., -1.), right)),
-        ],
-    };
+
+    let hittables: Vec<Arc<dyn hittable::Hittable>> = vec![
+        Arc::new(hittable::Sphere::new(r, DVec3::new(-r, 0., -1.), left)),
+        Arc::new(hittable::Sphere::new(r, DVec3::new(r, 0., -1.), right)),
+    ];
+    let scene = Scene::new(&hittables, TIME_MIN, TIME_MAX);
 
     let aspect_ratio = WIDTH as f64 / HEIGHT as f64;
     let camera = Camera::new(

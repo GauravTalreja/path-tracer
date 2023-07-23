@@ -86,3 +86,22 @@ impl Hittable for Sphere {
         })
     }
 }
+
+impl Bounded for Sphere {
+    fn bounding_box(&self, time_min: f64, time_max: f64) -> BoundingBox {
+        match self.moving_sphere {
+            Some(_) => BoundingBox::surrounding(&[
+                &bounding_box(self.center(time_min), self.radius),
+                &bounding_box(self.center(time_max), self.radius),
+            ]),
+            None => bounding_box(self.center, self.radius),
+        }
+    }
+}
+
+fn bounding_box(center: DVec3, radius: f64) -> BoundingBox {
+    BoundingBox {
+        minimum: center - DVec3::splat(radius),
+        maximum: center + DVec3::splat(radius),
+    }
+}
