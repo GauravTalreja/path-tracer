@@ -7,12 +7,9 @@ const TIME_MIN: f64 = 0.001;
 const TIME_MAX: f64 = f64::MAX;
 
 fn main() -> Result<(), image::ImageError> {
-    let left = Arc::new(material::Lambertian {
-        albedo: hex_color(0xb4befe),
-    });
-    let right = Arc::new(material::Lambertian {
-        albedo: hex_color(0xf5c2e7),
-    });
+    let left = Arc::new(material::Lambertian::new(hex_color(0xb4befe)));
+    let right = Arc::new(material::Lambertian::new(hex_color(0xf5c2e7)));
+
     let r = (PI / 4.).cos();
 
     let hittables: Vec<Arc<dyn hittable::Hittable>> = vec![

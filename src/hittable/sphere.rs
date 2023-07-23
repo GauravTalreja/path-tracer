@@ -1,4 +1,5 @@
 use super::impl_prelude::*;
+use std::f64::consts::PI;
 
 pub struct Sphere {
     radius: f64,
@@ -55,6 +56,12 @@ impl Sphere {
             None => self.center,
         }
     }
+
+    pub fn get_uv(&self, point: &DVec3) -> (f64, f64) {
+        let theta = -point.y.acos();
+        let phi = -point.z.atan2(point.x) + PI;
+        (phi / (2. * PI), theta / PI)
+    }
 }
 
 impl Hittable for Sphere {
@@ -77,12 +84,15 @@ impl Hittable for Sphere {
             }
         }
         let point = ray.at(time);
-        let normal = (point - center) / self.radius;
+        let normal: DVec3 = (point - center) / self.radius;
+        let (u, v) = self.get_uv(&normal);
         Some(HitResult {
             normal,
             time,
             point,
             material: Arc::downgrade(&self.material),
+            u,
+            v,
         })
     }
 }

@@ -7,15 +7,11 @@ impl Scene {
         let uniform_0_0_5 = Uniform::new(0., 0.5);
         let uniform_0_5_1 = Uniform::new(0.5, 1.);
 
-        let ground = Arc::new(material::Lambertian {
-            albedo: Color::splat(0.5),
-        });
+        let ground = Arc::new(material::Lambertian::new(Color::splat(0.5)));
         let glass = Arc::new(material::Dielectric {
             refractive_index: 1.5,
         });
-        let mat2 = Arc::new(material::Lambertian {
-            albedo: Color::new(0.4, 0.2, 0.1),
-        });
+        let mat2 = Arc::new(material::Lambertian::new(Color::new(0.4, 0.2, 0.1)));
         let mat3 = Arc::new(material::Metal {
             albedo: Color::new(0.7, 0.6, 0.5),
             fuzz: 0.,
@@ -44,8 +40,8 @@ impl Scene {
                 );
                 let random = rng.uniform_0_1.sample(thread_rng);
                 if random < 0.8 {
-                    let albedo = rng.color() * rng.color();
-                    let material = Arc::new(material::Lambertian { albedo });
+                    let color = rng.color() * rng.color();
+                    let material = Arc::new(material::Lambertian::new(color));
                     hittables.push(Arc::new(hittable::Sphere::new(0.2, center, material)));
                 } else if random < 0.95 {
                     let albedo = DVec3::new(
@@ -75,15 +71,11 @@ impl Scene {
         let uniform_0_0_5 = Uniform::new(0., 0.5);
         let uniform_0_5_1 = Uniform::new(0.5, 1.);
 
-        let ground = Arc::new(material::Lambertian {
-            albedo: Color::splat(0.5),
-        });
+        let ground = Arc::new(material::Lambertian::new(Color::splat(0.5)));
         let glass = Arc::new(material::Dielectric {
             refractive_index: 1.5,
         });
-        let mat2 = Arc::new(material::Lambertian {
-            albedo: Color::new(0.4, 0.2, 0.1),
-        });
+        let mat2 = Arc::new(material::Lambertian::new(Color::new(0.4, 0.2, 0.1)));
         let mat3 = Arc::new(material::Metal {
             albedo: Color::new(0.7, 0.6, 0.5),
             fuzz: 0.,
@@ -112,8 +104,8 @@ impl Scene {
                 );
                 let random = rng.uniform_0_1.sample(thread_rng);
                 if random < 0.8 {
-                    let albedo = rng.color() * rng.color();
-                    let material = Arc::new(material::Lambertian { albedo });
+                    let color = rng.color() * rng.color();
+                    let material = Arc::new(material::Lambertian::new(color));
                     let center_final =
                         center + DVec3::new(0., -uniform_0_0_5.sample(thread_rng), 0.);
                     hittables.push(Arc::new(hittable::Sphere::new_moving(

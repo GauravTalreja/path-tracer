@@ -37,6 +37,8 @@ impl Ray {
 pub struct HitResult {
     pub normal: DVec3,
     pub time: f64,
+    pub u: f64,
+    pub v: f64,
     pub point: DVec3,
     pub material: Weak<dyn Material>,
 }

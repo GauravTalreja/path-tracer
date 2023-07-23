@@ -1,6 +1,3 @@
-mod sphere;
-pub use sphere::Sphere;
-
 mod impl_prelude {
     pub use crate::hittable::*;
     pub use crate::material::Material;
@@ -11,18 +8,21 @@ mod impl_prelude {
 use impl_prelude::*;
 use rand::{thread_rng, Rng};
 
-#[derive(Clone)]
-pub struct BoundingBox {
-    pub minimum: DVec3,
-    pub maximum: DVec3,
-}
-
 pub trait Bounded {
     fn bounding_box(&self, time_min: f64, time_max: f64) -> BoundingBox;
 }
 
 pub trait Hittable: Bounded + Send + Sync {
     fn hit(&self, ray: &Ray, time_min: f64, time_max: f64) -> Option<HitResult>;
+}
+
+mod sphere;
+pub use sphere::Sphere;
+
+#[derive(Clone)]
+pub struct BoundingBox {
+    pub minimum: DVec3,
+    pub maximum: DVec3,
 }
 
 impl BoundingBox {
@@ -87,12 +87,15 @@ impl BvhNode {
             }
             _ => {
                 match thread_rng().gen_range(0..=2) {
-                    0 => hittables
-                        .sort_by(|(_, box0), (_, box1)| box0.minimum.x.total_cmp(&box1.minimum.x)),
-                    1 => hittables
-                        .sort_by(|(_, box0), (_, box1)| box0.minimum.y.total_cmp(&box1.minimum.y)),
-                    _ => hittables
-                        .sort_by(|(_, box0), (_, box1)| box0.minimum.z.total_cmp(&box1.minimum.z)),
+                    0 => hittables.sort_unstable_by(|(_, box0), (_, box1)| {
+                        box0.minimum.x.total_cmp(&box1.minimum.x)
+                    }),
+                    1 => hittables.sort_unstable_by(|(_, box0), (_, box1)| {
+                        box0.minimum.y.total_cmp(&box1.minimum.y)
+                    }),
+                    _ => hittables.sort_unstable_by(|(_, box0), (_, box1)| {
+                        box0.minimum.z.total_cmp(&box1.minimum.z)
+                    }),
                 };
                 let (left, right) = hittables.split_at_mut(hittables.len() / 2);
                 let left = Arc::new(BvhNode::new(left, time_min, time_max));

@@ -16,3 +16,4 @@ pub use std::sync::Arc;
 pub mod hittable;
 pub mod material;
 pub mod random_scene;
+pub mod texture;

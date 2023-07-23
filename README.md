@@ -7,3 +7,8 @@
 |:--:| 
 | *Motion Blur* |
 | `cargo run --release --example bouncing_spheres` |
+
+| ![](examples/checker.png)|
+|:--:| 
+| *Checker Texture* |
+| `cargo run --release --example checker` |

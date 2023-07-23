@@ -1,25 +1,14 @@
-mod dielectric;
-mod lambertian;
-mod metal;
-pub use dielectric::Dielectric;
-pub use lambertian::Lambertian;
-pub use metal::Metal;
-
 mod impl_prelude {
     pub use super::{reflect, refract, Material, Scatter};
     pub use crate::{
         color::Color,
         ray::{HitResult, Ray},
         rng::RandomNumberGenerator,
+        texture::Texture,
     };
     pub use glam::DVec3;
 }
 use impl_prelude::*;
-
-pub struct Scatter {
-    pub ray: Ray,
-    pub attenuation: Color,
-}
 
 pub trait Material: Send + Sync {
     fn scatter(
@@ -29,6 +18,20 @@ pub trait Material: Send + Sync {
         rng: &RandomNumberGenerator,
     ) -> Option<Scatter>;
 }
+
+pub struct Scatter {
+    pub ray: Ray,
+    pub attenuation: Color,
+}
+
+mod dielectric;
+pub use dielectric::Dielectric;
+
+mod lambertian;
+pub use lambertian::Lambertian;
+
+mod metal;
+pub use metal::Metal;
 
 pub fn refract(uv: DVec3, normal: DVec3, refraction_ratio: f64) -> DVec3 {
     let cos_theta = (-uv).dot(normal).min(1.);
