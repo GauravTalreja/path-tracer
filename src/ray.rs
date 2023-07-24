@@ -2,6 +2,7 @@ use super::material::Material;
 use glam::DVec3;
 use std::sync::Weak;
 
+#[derive(Clone, Copy)]
 pub struct Ray {
     origin: DVec3,
     direction: DVec3,

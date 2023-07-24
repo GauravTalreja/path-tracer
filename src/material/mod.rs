@@ -14,10 +14,16 @@ use impl_prelude::*;
 pub trait Material: Send + Sync {
     fn scatter(
         &self,
-        ray: &Ray,
-        hit_result: &HitResult,
-        rng: &RandomNumberGenerator,
-    ) -> Option<Scatter>;
+        _ray: &Ray,
+        _hit_result: &HitResult,
+        _rng: &RandomNumberGenerator,
+    ) -> Option<Scatter> {
+        None
+    }
+
+    fn scattering_pdf(&self, _ray: &Ray, _hit_result: &HitResult, _scatter: &Scatter) -> f64 {
+        0.
+    }
 
     fn emitted(&self, _point: &DVec3, _u: &f64, _v: &f64) -> Color {
         Color::ZERO
@@ -27,16 +33,18 @@ pub trait Material: Send + Sync {
 pub struct Scatter {
     pub ray: Ray,
     pub attenuation: Color,
+    pub albedo: Color,
+    pub pdf: f64,
 }
 
-mod dielectric;
-pub use dielectric::Dielectric;
+//mod dielectric;
+//pub use dielectric::Dielectric;
 
 mod lambertian;
 pub use lambertian::Lambertian;
 
-mod metal;
-pub use metal::Metal;
+//mod metal;
+//pub use metal::Metal;
 
 mod diffuse_light;
 pub use diffuse_light::DiffuseLight;

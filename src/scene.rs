@@ -48,9 +48,19 @@ impl Scene {
                 let material = hit_result.material.upgrade().unwrap();
                 let HitResult { u, v, point, .. } = hit_result;
                 let emitted = material.emitted(&point, &u, &v);
-                match material.scatter(ray, &hit_result, rng) {
-                    Some(Scatter { ray, attenuation }) => {
-                        emitted + attenuation * self.color(&ray, depth - 1, rng, time_min, time_max)
+                let scatter = material.scatter(ray, &hit_result, rng);
+                match scatter {
+                    Some(Scatter {
+                        ray,
+                        attenuation,
+                        albedo,
+                        pdf,
+                    }) => {
+                        emitted
+                            + albedo
+                                * material.scattering_pdf(&ray, &hit_result, &scatter.unwrap())
+                                * self.color(&ray, depth - 1, rng, time_min, time_max)
+                                / pdf
                     }
                     None => emitted,
                 }
