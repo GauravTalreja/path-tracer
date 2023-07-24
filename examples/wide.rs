@@ -16,7 +16,7 @@ fn main() -> Result<(), image::ImageError> {
         Arc::new(hittable::Sphere::new(r, DVec3::new(-r, 0., -1.), left)),
         Arc::new(hittable::Sphere::new(r, DVec3::new(r, 0., -1.), right)),
     ];
-    let scene = Scene::new(&hittables, TIME_MIN, TIME_MAX);
+    let scene = Scene::new(&hittables, TIME_MIN, TIME_MAX, Color::new(0.70, 0.80, 1.00));
 
     let aspect_ratio = WIDTH as f64 / HEIGHT as f64;
     let camera = Camera::new(

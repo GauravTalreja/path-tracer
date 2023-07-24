@@ -19,6 +19,10 @@ pub trait Hittable: Bounded + Send + Sync {
 mod sphere;
 pub use sphere::Sphere;
 
+mod rectangle;
+pub use rectangle::Plane;
+pub use rectangle::Rectangle;
+
 #[derive(Clone)]
 pub struct BoundingBox {
     pub minimum: DVec3,

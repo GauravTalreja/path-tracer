@@ -58,7 +58,7 @@ impl Scene {
             }
         }
 
-        Scene::new(&hittables, 0., 1.)
+        Scene::new(&hittables, 0., 1., Color::new(0.70, 0.80, 1.00))
     }
 
     pub fn random_moving_spheres(
@@ -131,6 +131,6 @@ impl Scene {
             }
         }
 
-        Scene::new(&hittables, time_min, time_max)
+        Scene::new(&hittables, time_min, time_max, Color::new(0.70, 0.80, 1.00))
     }
 }

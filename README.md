@@ -17,3 +17,13 @@
 |:--:| 
 | *Image Texture* |
 | `cargo run --release --example image_mapping` |
+
+| ![](examples/simple_light.png)|
+|:--:| 
+| *Image Texture* |
+| `cargo run --release --example simple_light` |
+
+| ![](examples/cornell_box.png)|
+|:--:| 
+| *Image Texture* |
+| `cargo run --release --example cornell_box` |

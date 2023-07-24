@@ -14,26 +14,28 @@ fn main() -> Result<(), image::ImageError> {
             even: pink,
         }),
     });
+    let diffuse_light = Arc::new(material::DiffuseLight::new(Color::splat(4.)));
     let hittables: Vec<Arc<dyn hittable::Hittable>> = vec![
         Arc::new(hittable::Sphere::new(
-            10.,
-            DVec3::new(0., -10., -1.),
+            1000.,
+            DVec3::new(0., 1000., 0.),
             checker.clone(),
         )),
+        Arc::new(hittable::Sphere::new(2., DVec3::new(0., -2., 0.), checker)),
         Arc::new(hittable::Sphere::new(
-            10.,
-            DVec3::new(0., 10., -1.),
-            checker,
+            1.5,
+            DVec3::new(0., -6.5, 0.),
+            diffuse_light,
         )),
     ];
-    let scene = Scene::new(&hittables, TIME_MIN, TIME_MAX, Color::new(0.70, 0.80, 1.00));
+    let scene = Scene::new(&hittables, TIME_MIN, TIME_MAX, Color::ZERO);
 
     let aspect_ratio = WIDTH as f64 / HEIGHT as f64;
     let camera = Camera::new(
-        DVec3::new(13., -2., 3.),
-        DVec3::new(0., 0., 0.),
-        DVec3::new(0., -1., 0.),
-        40.,
+        DVec3::new(23., -3., 6.),
+        DVec3::new(0., -2., 0.),
+        DVec3::new(0., 1., 0.),
+        20.,
         aspect_ratio,
         0.,
         10.,
@@ -41,6 +43,6 @@ fn main() -> Result<(), image::ImageError> {
         TIME_MAX,
     );
 
-    let image = Render::new(WIDTH, HEIGHT, 100, scene, camera).to_image();
-    image.save_with_format("examples/checker.png", image::ImageFormat::Png)
+    let image = Render::new(WIDTH, HEIGHT, 400, scene, camera).to_image();
+    image.save_with_format("examples/simple_light.png", image::ImageFormat::Png)
 }

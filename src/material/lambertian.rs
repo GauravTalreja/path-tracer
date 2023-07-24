@@ -1,7 +1,4 @@
-use crate::texture::SolidColor;
-
 use super::impl_prelude::*;
-use std::sync::Arc;
 
 pub struct Lambertian {
     pub albedo: Arc<dyn Texture>,
