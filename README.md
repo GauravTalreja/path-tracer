@@ -20,10 +20,10 @@
 
 | ![](examples/simple_light.png)|
 |:--:| 
-| *Image Texture* |
+| *Simple Light* |
 | `cargo run --release --example simple_light` |
 
 | ![](examples/cornell_box.png)|
 |:--:| 
-| *Image Texture* |
+| *Cornell Box, 200 samples per pixel, Uniform Hemisphere Sampling* |
 | `cargo run --release --example cornell_box` |
