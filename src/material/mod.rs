@@ -2,11 +2,13 @@ mod impl_prelude {
     pub use super::{reflect, refract, Material, Scatter};
     pub use crate::{
         color::Color,
+        onb::Onb,
         ray::{HitResult, Ray},
         rng::RandomNumberGenerator,
         texture::*,
     };
     pub use glam::DVec3;
+    pub use std::f64::consts::PI;
     pub use std::sync::Arc;
 }
 use impl_prelude::*;

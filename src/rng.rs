@@ -1,5 +1,6 @@
 use glam::DVec3;
 use rand::{distributions::Uniform, prelude::Distribution, rngs::ThreadRng, thread_rng};
+use std::f64::consts::PI;
 
 use crate::Color;
 
@@ -73,5 +74,16 @@ impl RandomNumberGenerator {
             self.uniform_0_1.sample(&mut rng),
             self.uniform_0_1.sample(&mut rng),
         )
+    }
+
+    pub fn cosine_direction(&self) -> DVec3 {
+        let rng = &mut thread_rng();
+        let r1 = self.uniform_0_1.sample(rng);
+        let r2 = self.uniform_0_1.sample(rng);
+        let z = (1. - r2).sqrt();
+        let phi = 2. * PI * r1;
+        let x = phi.cos() * r2.sqrt();
+        let y = phi.sin() * r2.sqrt();
+        DVec3 { x, y, z }
     }
 }

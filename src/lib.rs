@@ -1,5 +1,6 @@
 mod camera;
 mod color;
+mod onb;
 mod ray;
 mod render;
 mod rng;

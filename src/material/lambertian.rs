@@ -1,5 +1,4 @@
 use super::impl_prelude::*;
-use std::f64::consts::PI;
 
 pub struct Lambertian {
     pub albedo: Arc<dyn Texture>,
@@ -18,10 +17,11 @@ impl Material for Lambertian {
         }: &HitResult,
         rng: &RandomNumberGenerator,
     ) -> Option<Scatter> {
-        let direction = rng.in_hemishphere(normal);
+        let onb = Onb::new_from_w(normal);
+        let direction = onb.local(&rng.cosine_direction()).normalize();
         let ray = Ray::new(*point, direction, ray.time());
         let attenuation = self.albedo.color(point, u, v);
-        let pdf = 0.5 / PI;
+        let pdf = onb.w.dot(direction) / PI;
         Some(Scatter {
             ray,
             attenuation,
