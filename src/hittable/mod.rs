@@ -23,6 +23,9 @@ mod rectangle;
 pub use rectangle::Plane;
 pub use rectangle::Rectangle;
 
+mod cuboid;
+pub use cuboid::Cuboid;
+
 #[derive(Clone)]
 pub struct BoundingBox {
     pub minimum: DVec3,

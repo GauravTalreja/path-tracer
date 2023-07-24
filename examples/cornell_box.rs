@@ -65,6 +65,16 @@ fn main() -> Result<(), image::ImageError> {
             white.clone(),
             hittable::Plane::XY,
         )),
+        Arc::new(hittable::Cuboid::new(
+            DVec3::new(130., 0., 65.),
+            DVec3::new(295., 165., 230.),
+            white.clone(),
+        )),
+        Arc::new(hittable::Cuboid::new(
+            DVec3::new(265., 0., 295.),
+            DVec3::new(430., 330., 460.),
+            white.clone(),
+        )),
     ];
     let scene = Scene::new(&hittables, TIME_MIN, TIME_MAX, Color::ZERO);
 
@@ -81,6 +91,6 @@ fn main() -> Result<(), image::ImageError> {
         TIME_MAX,
     );
 
-    let image = Render::new(WIDTH, HEIGHT, 1000, scene, camera).to_image();
+    let image = Render::new(WIDTH, HEIGHT, 200, scene, camera).to_image();
     image.save("examples/cornell_box.png")
 }
