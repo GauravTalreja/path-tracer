@@ -1,4 +1,4 @@
-mod impl_prelude {
+mod prelude {
     pub use super::{reflect, refract, Material, Scatter};
     pub use crate::{
         color::Color,
@@ -9,7 +9,7 @@ mod impl_prelude {
     pub use glam::DVec3;
     pub use std::sync::Arc;
 }
-use impl_prelude::*;
+use prelude::*;
 
 pub trait Material: Send + Sync {
     fn scatter(

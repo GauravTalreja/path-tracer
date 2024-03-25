@@ -1,4 +1,4 @@
-use super::impl_prelude::*;
+use super::prelude::*;
 
 pub struct Metal {
     pub albedo: Color,

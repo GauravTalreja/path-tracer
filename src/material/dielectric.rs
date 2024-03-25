@@ -1,4 +1,4 @@
-use super::impl_prelude::*;
+use super::prelude::*;
 use rand::{prelude::Distribution, thread_rng};
 
 pub struct Dielectric {

@@ -1,4 +1,4 @@
-use super::impl_prelude::*;
+use super::prelude::*;
 
 pub struct DiffuseLight {
     pub emit: Arc<dyn Texture>,

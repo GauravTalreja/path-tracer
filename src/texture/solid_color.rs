@@ -1,4 +1,4 @@
-use super::impl_prelude::*;
+use super::prelude::*;
 
 pub struct SolidColor {
     pub color: Color,

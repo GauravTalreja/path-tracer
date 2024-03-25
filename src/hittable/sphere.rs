@@ -1,4 +1,4 @@
-use super::impl_prelude::*;
+use super::prelude::*;
 use std::f64::consts::PI;
 
 pub struct Sphere {

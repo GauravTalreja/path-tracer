@@ -1,11 +1,11 @@
-mod impl_prelude {
+mod prelude {
     pub use crate::hittable::*;
     pub use crate::material::Material;
     pub use crate::ray::{HitResult, Ray};
     pub use glam::DVec3;
     pub use std::sync::Arc;
 }
-use impl_prelude::*;
+use prelude::*;
 use rand::{thread_rng, Rng};
 
 pub trait Bounded {

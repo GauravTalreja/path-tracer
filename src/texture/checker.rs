@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use super::impl_prelude::*;
+use super::prelude::*;
 
 pub struct Checker {
     pub odd: Arc<dyn Texture>,

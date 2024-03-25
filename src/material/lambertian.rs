@@ -1,4 +1,4 @@
-use super::impl_prelude::*;
+use super::prelude::*;
 
 pub struct Lambertian {
     pub albedo: Arc<dyn Texture>,
