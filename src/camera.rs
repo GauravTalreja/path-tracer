@@ -1,6 +1,7 @@
 use super::{ray::Ray, rng::RandomNumberGenerator};
 use glam::DVec3;
 
+#[derive(Copy, Clone)]
 pub struct Camera {
     origin: DVec3,
     horizontal: DVec3,
