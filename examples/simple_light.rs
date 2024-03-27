@@ -18,13 +18,13 @@ fn main() -> Result<(), image::ImageError> {
     let hittables: Vec<Arc<dyn hittable::Hittable>> = vec![
         Arc::new(hittable::Sphere::new(
             1000.,
-            DVec3::new(0., 1000., 0.),
+            DVec3::new(0., -1000., 0.),
             checker.clone(),
         )),
-        Arc::new(hittable::Sphere::new(2., DVec3::new(0., -2., 0.), checker)),
+        Arc::new(hittable::Sphere::new(2., DVec3::new(0., 2., 0.), checker)),
         Arc::new(hittable::Sphere::new(
             1.5,
-            DVec3::new(0., -6.5, 0.),
+            DVec3::new(0., 6.5, 0.),
             diffuse_light,
         )),
     ];
@@ -32,8 +32,8 @@ fn main() -> Result<(), image::ImageError> {
 
     let aspect_ratio = WIDTH as f64 / HEIGHT as f64;
     let camera = Camera::new(
-        DVec3::new(23., -3., 6.),
-        DVec3::new(0., -2., 0.),
+        DVec3::new(23., 3., 6.),
+        DVec3::new(0., 2., 0.),
         DVec3::new(0., 1., 0.),
         20.,
         aspect_ratio,

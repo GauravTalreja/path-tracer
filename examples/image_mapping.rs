@@ -30,7 +30,7 @@ fn main() -> Result<(), image::ImageError> {
     let camera = Camera::new(
         DVec3::new(13., -2., 3.),
         DVec3::new(0., 0., 0.),
-        DVec3::new(0., -1., 0.),
+        DVec3::new(0., 1., 0.),
         20.,
         aspect_ratio,
         0.,

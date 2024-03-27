@@ -24,7 +24,7 @@ impl Image {
 impl Texture for Image {
     fn color(&self, _point: &DVec3, u: &f64, v: &f64) -> Color {
         let (width, height) = (self.width as usize, self.height as usize);
-        let u = u.clamp(0., 1.);
+        let u = 1. - u.clamp(0., 1.);
         let v = 1. - v.clamp(0., 1.);
         let i = (u * width as f64) as usize;
         let j = (v * height as f64) as usize;

@@ -8,7 +8,7 @@ fn main() -> Result<(), image::ImageError> {
     let rng = RandomNumberGenerator::new();
     let scene = Scene::random_moving_spheres(11, rng, TIME_MIN, TIME_MAX);
 
-    let look_from = DVec3::new(13., -2., 3.);
+    let look_from = DVec3::new(13., 2., 3.);
     let look_at = DVec3::new(0., 0., 0.);
     let vup = DVec3::new(0., 1., 0.);
     let aspect_ratio = WIDTH as f64 / HEIGHT as f64;

@@ -17,12 +17,10 @@ impl Ray {
         }
     }
 
-    pub fn origin(&self) -> &DVec3 {
-        &self.origin
-    }
+    pub fn origin(&self) -> DVec3 { self.origin }
 
-    pub fn direction(&self) -> &DVec3 {
-        &self.direction
+    pub fn direction(&self) -> DVec3 {
+        self.direction
     }
 
     pub fn time(&self) -> f64 {

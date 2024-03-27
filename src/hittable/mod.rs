@@ -21,14 +21,13 @@ pub trait Hittable: Bounded + Send + Sync {
 mod sphere;
 pub use sphere::Sphere;
 
-mod rectangle;
-pub use rectangle::Plane;
-pub use rectangle::Rectangle;
+mod quad;
+pub use quad::Quad;
 
-mod cuboid;
-pub use cuboid::Cuboid;
+mod transform;
+pub use transform::Transform;
 
-#[derive(Clone)]
+#[derive(Copy, Clone)]
 pub struct BoundingBox {
     pub minimum: DVec3,
     pub maximum: DVec3,
@@ -49,7 +48,7 @@ impl BoundingBox {
     /* Alexander MajeArcik, Cyril Crassin, Peter Shirley, and Morgan McGuire, A Ray-Box Intersection Algorithm and Efficient Dynamic Voxel Rendering, Journal of Computer Graphics Techniques (JCGT), vol. 7, no. 3, 66-81, 2018
     Available online http://jcgt.org/published/0007/03/04/ */
     pub fn hit(&self, ray: &Ray, time_min: f64, time_max: f64) -> bool {
-        let ray_origin = *ray.origin();
+        let ray_origin = ray.origin();
         let inv_ray_direction = ray.direction().recip();
         let t0 = (self.minimum - ray_origin) * inv_ray_direction;
         let t1 = (self.maximum - ray_origin) * inv_ray_direction;

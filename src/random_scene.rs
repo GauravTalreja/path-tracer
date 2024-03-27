@@ -19,23 +19,23 @@ impl Scene {
         let mut hittables: Vec<Arc<dyn hittable::Hittable>> = vec![
             Arc::new(hittable::Sphere::new(
                 1000.,
-                DVec3::new(0., 1000., 0.),
+                DVec3::new(0., -1000., 0.),
                 ground,
             )),
             Arc::new(hittable::Sphere::new(
                 1.,
-                DVec3::new(0., -1., 0.),
+                DVec3::new(0., 1., 0.),
                 glass.clone(),
             )),
-            Arc::new(hittable::Sphere::new(1., DVec3::new(-4., -1., 0.), mat2)),
-            Arc::new(hittable::Sphere::new(1., DVec3::new(4., -1., 0.), mat3)),
+            Arc::new(hittable::Sphere::new(1., DVec3::new(-4., 1., 0.), mat2)),
+            Arc::new(hittable::Sphere::new(1., DVec3::new(4., 1., 0.), mat3)),
         ];
 
         for a in -n..n {
             for b in -n..n {
                 let center = DVec3::new(
                     a as f64 + 0.9 * rng.uniform_0_1.sample(thread_rng),
-                    -0.2,
+                    0.2,
                     b as f64 + 0.9 * rng.uniform_0_1.sample(thread_rng),
                 );
                 let random = rng.uniform_0_1.sample(thread_rng);
@@ -83,23 +83,23 @@ impl Scene {
         let mut hittables: Vec<Arc<dyn hittable::Hittable>> = vec![
             Arc::new(hittable::Sphere::new(
                 1000.,
-                DVec3::new(0., 1000., 0.),
+                DVec3::new(0., -1000., 0.),
                 ground,
             )),
             Arc::new(hittable::Sphere::new(
                 1.,
-                DVec3::new(0., -1., 0.),
+                DVec3::new(0., 1., 0.),
                 glass.clone(),
             )),
-            Arc::new(hittable::Sphere::new(1., DVec3::new(-4., -1., 0.), mat2)),
-            Arc::new(hittable::Sphere::new(1., DVec3::new(4., -1., 0.), mat3)),
+            Arc::new(hittable::Sphere::new(1., DVec3::new(-4., 1., 0.), mat2)),
+            Arc::new(hittable::Sphere::new(1., DVec3::new(4., 1., 0.), mat3)),
         ];
 
         for a in -n..n {
             for b in -n..n {
                 let center = DVec3::new(
                     a as f64 + 0.9 * rng.uniform_0_1.sample(thread_rng),
-                    -0.2,
+                    0.2,
                     b as f64 + 0.9 * rng.uniform_0_1.sample(thread_rng),
                 );
                 let random = rng.uniform_0_1.sample(thread_rng);
@@ -107,7 +107,7 @@ impl Scene {
                     let color = rng.color() * rng.color();
                     let material = Arc::new(material::Lambertian::new(color));
                     let center_final =
-                        center + DVec3::new(0., -uniform_0_0_5.sample(thread_rng), 0.);
+                        center + DVec3::new(0., uniform_0_0_5.sample(thread_rng), 0.);
                     hittables.push(Arc::new(hittable::Sphere::new_moving(
                         0.2,
                         center,
