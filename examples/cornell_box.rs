@@ -82,7 +82,7 @@ fn main() -> Result<(), image::ImageError> {
     let camera = Camera::new(
         DVec3::new(278., 278., -800.),
         DVec3::new(278., 278., 0.),
-        DVec3::new(0., -1., 0.),
+        DVec3::new(0., 1., 0.),
         40.,
         aspect_ratio,
         0.,
@@ -91,6 +91,6 @@ fn main() -> Result<(), image::ImageError> {
         TIME_MAX,
     );
 
-    let image = Render::new(WIDTH, HEIGHT, 200, scene, camera).to_image();
+    let image = Render::new(WIDTH, HEIGHT, 20, scene, camera).to_image();
     image.save("examples/cornell_box.png")
 }

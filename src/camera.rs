@@ -1,64 +1,87 @@
 use super::{ray::Ray, rng::RandomNumberGenerator};
 use glam::DVec3;
+use rand::distributions::Uniform;
+use rand::prelude::Distribution;
+use rand::thread_rng;
 
 #[derive(Copy, Clone)]
 pub struct Camera {
-    origin: DVec3,
-    horizontal: DVec3,
-    vertical: DVec3,
-    lower_left_corner: DVec3,
-    u: DVec3,
-    v: DVec3,
-    lens_radius: f64,
-    pub time_min: f64,
-    pub time_max: f64,
+    look_from: DVec3,
+    pub viewport_u: DVec3,
+    pub viewport_v: DVec3,
+    pub viewport_upper_left: DVec3,
+    defocus_angle: f64,
+    defocus_disk_u: DVec3,
+    defocus_disk_v: DVec3,
+    time: Uniform<f64>
 }
 
 impl Camera {
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
         look_from: DVec3,
         look_at: DVec3,
-        vup: DVec3,
-        vfov: f64,
+        up: DVec3,
+
+        fov: f64,
         aspect_ratio: f64,
-        aperture: f64,
+
+        defocus_angle: f64,
         focus_distance: f64,
+
         time_min: f64,
         time_max: f64,
     ) -> Self {
-        let theta = vfov.to_radians() / 2.;
+        let theta = fov.to_radians() / 2.;
         let h = theta.tan();
-        let viewport_height = 2. * h;
-        let viewport_width = aspect_ratio * viewport_height;
+        let viewport_height = 2. * h * focus_distance;
+        let viewport_width =  viewport_height * aspect_ratio;
 
         let w = (look_from - look_at).normalize();
-        let u = vup.cross(w).normalize();
+        let u = up.cross(w).normalize();
         let v = w.cross(u);
-        let origin = look_from;
-        let horizontal = focus_distance * viewport_width * u;
-        let vertical = focus_distance * viewport_height * v;
-        let lower_left_corner = origin - (horizontal + vertical) / 2. - focus_distance * w;
-        let lens_radius = aperture / 2.;
+
+        let viewport_u = viewport_width * u;
+        let viewport_v = viewport_height * -v;
+
+        let viewport_upper_left = look_from - (focus_distance * w) - viewport_u / 2. - viewport_v / 2.;
+
+        let defocus_radius = focus_distance * (defocus_angle / 2.).to_radians().tan();
+        let defocus_disk_u = u * defocus_radius;
+        let defocus_disk_v = v * defocus_radius;
+
+        let time = Uniform::new(time_min, time_max);
+
         Self {
-            origin,
-            horizontal,
-            vertical,
-            lower_left_corner,
-            u,
-            v,
-            lens_radius,
-            time_min,
-            time_max,
+            look_from,
+            viewport_u,
+            viewport_v,
+            viewport_upper_left,
+            defocus_angle,
+            defocus_disk_u,
+            defocus_disk_v,
+            time
         }
     }
 
-    pub fn get_ray(&self, s: f64, t: f64, rng: &RandomNumberGenerator) -> Ray {
-        let random = self.lens_radius * rng.in_unit_disk();
-        let offset = self.u * random.x + self.v * random.y;
+    pub fn get_ray(&self, viewport_pos: DVec3, rng: &RandomNumberGenerator) -> Ray {
+        let origin = if self.defocus_angle <= 0. {
+            self.look_from
+        } else {
+            let p = rng.in_unit_disk();
+            self.look_from + self.defocus_disk_u * p.x + self.defocus_disk_v * p.y
+        };
+        let direction = viewport_pos - origin;
+        let time = self.time();
         Ray::new(
-            self.origin + offset,
-            self.lower_left_corner + self.horizontal * s + self.vertical * t - self.origin - offset,
-            rng.time(),
+            origin,
+            direction,
+            time
         )
+    }
+
+    pub fn time(&self) -> f64 {
+            let mut rng = thread_rng();
+            self.time.sample(&mut rng)
     }
 }

@@ -4,9 +4,11 @@ mod prelude {
     pub use crate::ray::{HitResult, Ray};
     pub use glam::DVec3;
     pub use std::sync::Arc;
+    #[allow(unused_imports)] // this is supposedly unused but doesn't compile when excluded
+    pub use rand::{thread_rng, Rng};
 }
 use prelude::*;
-use rand::{thread_rng, Rng};
+
 
 pub trait Bounded {
     fn bounding_box(&self, time_min: f64, time_max: f64) -> BoundingBox;

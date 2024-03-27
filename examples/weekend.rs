@@ -5,7 +5,7 @@ const TIME_MIN: f64 = 0.001;
 const TIME_MAX: f64 = f64::MAX;
 
 fn main() -> Result<(), image::ImageError> {
-    let rng = RandomNumberGenerator::new(TIME_MIN, TIME_MAX);
+    let rng = RandomNumberGenerator::new();
     let scene = Scene::random_spheres(11, rng);
 
     let look_from = DVec3::new(13., -2., 3.);
