@@ -44,7 +44,7 @@ impl Scene {
                     let material = Arc::new(material::Lambertian::new(color));
                     hittables.push(Arc::new(hittable::Sphere::new(0.2, center, material)));
                 } else if random < 0.95 {
-                    let albedo = Vec3A::new(
+                    let albedo = Color::new(
                         uniform_0_5_1.sample(thread_rng),
                         uniform_0_5_1.sample(thread_rng),
                         uniform_0_5_1.sample(thread_rng),
@@ -117,7 +117,7 @@ impl Scene {
                         center_final,
                     )));
                 } else if random < 0.95 {
-                    let albedo = Vec3A::new(
+                    let albedo = Color::new(
                         uniform_0_5_1.sample(thread_rng),
                         uniform_0_5_1.sample(thread_rng),
                         uniform_0_5_1.sample(thread_rng),
