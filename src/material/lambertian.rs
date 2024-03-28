@@ -1,5 +1,6 @@
 use super::prelude::*;
 
+#[derive(Clone)]
 pub struct Lambertian {
     pub albedo: Arc<dyn Texture>,
 }

@@ -1,6 +1,7 @@
 use super::prelude::*;
 use glam::{Quat, Mat4, Vec3};
 
+#[derive(Clone)]
 pub struct Transform {
     object: Arc<dyn Hittable>,
     transform: Mat4,

@@ -1,6 +1,7 @@
 use super::prelude::*;
 use rand::{prelude::Distribution, thread_rng};
 
+#[derive(Clone)]
 pub struct Dielectric {
     pub refractive_index: f32,
 }

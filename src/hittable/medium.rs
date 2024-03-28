@@ -1,6 +1,7 @@
 use crate::{Color, material::Isotropic};
 use super::prelude::*;
 
+#[derive(Clone)]
 pub struct Medium {
     boundary: Arc<dyn Hittable>,
     neg_inv_density: f32,

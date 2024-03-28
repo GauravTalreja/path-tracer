@@ -1,5 +1,6 @@
 use super::prelude::*;
 
+#[derive(Clone)]
 pub struct Isotropic {
     albedo: Arc<dyn Texture>,
 }

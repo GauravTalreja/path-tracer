@@ -1,6 +1,7 @@
 use super::prelude::*;
 use std::f32::consts::PI;
 
+#[derive(Clone)]
 pub struct Sphere {
     radius: f32,
     center: Vec3A,
@@ -8,6 +9,7 @@ pub struct Sphere {
     moving_sphere: Option<MovingSphere>,
 }
 
+#[derive(Clone)]
 pub struct MovingSphere {
     pub time_min: f32,
     pub center: Vec3A,

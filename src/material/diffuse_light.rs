@@ -1,5 +1,6 @@
 use super::prelude::*;
 
+#[derive(Clone)]
 pub struct DiffuseLight {
     pub emit: Arc<dyn Texture>,
 }

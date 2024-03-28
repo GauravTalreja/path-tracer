@@ -1,5 +1,6 @@
 use super::prelude::*;
 
+#[derive(Clone)]
 pub struct Quad {
     q: Vec3A,
     u: Vec3A,
@@ -105,6 +106,7 @@ impl Bounded for Quad {
     }
 }
 
+#[derive(Clone)]
 pub struct Box {
     sides: Vec<Quad>,
     bb: BoundingBox

@@ -1,5 +1,6 @@
 use super::prelude::*;
 
+#[derive(Clone)]
 pub struct Metal {
     pub albedo: Color,
     pub fuzz: f32,
