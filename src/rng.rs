@@ -17,11 +17,11 @@ impl RandomNumberGenerator {
     }
     pub fn in_unit_cube(&self) -> Vec3A {
         let mut rng = thread_rng();
-        Vec3A {
-            x: self.uniform_minus_1_1.sample(&mut rng),
-            y: self.uniform_minus_1_1.sample(&mut rng),
-            z: self.uniform_minus_1_1.sample(&mut rng),
-        }
+        Vec3A::new(
+            self.uniform_minus_1_1.sample(&mut rng),
+            self.uniform_minus_1_1.sample(&mut rng),
+            self.uniform_minus_1_1.sample(&mut rng),
+        )
     }
 
     pub fn in_unit_sphere(&self) -> Vec3A {
@@ -42,11 +42,11 @@ impl RandomNumberGenerator {
     }
 
     fn try_in_unit_disk(&self, rng: &mut ThreadRng) -> Vec3A {
-        Vec3A {
-            x: self.uniform_minus_1_1.sample(rng),
-            y: self.uniform_minus_1_1.sample(rng),
-            z: 0.,
-        }
+        Vec3A::new(
+            self.uniform_minus_1_1.sample(rng),
+            self.uniform_minus_1_1.sample(rng),
+            0.,
+        )
     }
 
     pub fn in_unit_disk(&self) -> Vec3A {
