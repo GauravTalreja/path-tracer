@@ -7,7 +7,7 @@ pub struct Quad {
     v: Vec3A,
     normal: Vec3A,
     d: f32,
-    material: Arc<dyn Material>,
+    pub material: Arc<dyn Material>,
 }
 
 impl Quad {
