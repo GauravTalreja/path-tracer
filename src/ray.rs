@@ -1,15 +1,15 @@
 use super::material::Material;
-use glam::DVec3;
+use crate::Vec3A;
 use std::sync::Weak;
 
 pub struct Ray {
-    origin: DVec3,
-    direction: DVec3,
-    time: f64,
+    origin: Vec3A,
+    direction: Vec3A,
+    time: f32,
 }
 
 impl Ray {
-    pub fn new(origin: DVec3, direction: DVec3, time: f64) -> Self {
+    pub fn new(origin: Vec3A, direction: Vec3A, time: f32) -> Self {
         Self {
             origin,
             direction,
@@ -17,26 +17,26 @@ impl Ray {
         }
     }
 
-    pub fn origin(&self) -> DVec3 { self.origin }
+    pub fn origin(&self) -> Vec3A { self.origin }
 
-    pub fn direction(&self) -> DVec3 {
+    pub fn direction(&self) -> Vec3A {
         self.direction
     }
 
-    pub fn time(&self) -> f64 {
+    pub fn time(&self) -> f32 {
         self.time
     }
 
-    pub fn at(&self, t: f64) -> DVec3 {
+    pub fn at(&self, t: f32) -> Vec3A {
         self.origin + t * self.direction
     }
 }
 
 pub struct HitResult {
-    pub normal: DVec3,
-    pub time: f64,
-    pub u: f64,
-    pub v: f64,
-    pub point: DVec3,
+    pub normal: Vec3A,
+    pub time: f32,
+    pub u: f32,
+    pub v: f32,
+    pub point: Vec3A,
     pub material: Weak<dyn Material>,
 }

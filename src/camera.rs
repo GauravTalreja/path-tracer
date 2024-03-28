@@ -1,36 +1,36 @@
 use super::{ray::Ray, rng::RandomNumberGenerator};
-use glam::DVec3;
+use crate::Vec3A;
 use rand::distributions::Uniform;
 use rand::prelude::Distribution;
 use rand::thread_rng;
 
 #[derive(Copy, Clone)]
 pub struct Camera {
-    look_from: DVec3,
-    pub viewport_u: DVec3,
-    pub viewport_v: DVec3,
-    pub viewport_upper_left: DVec3,
-    defocus_angle: f64,
-    defocus_disk_u: DVec3,
-    defocus_disk_v: DVec3,
-    time: Uniform<f64>
+    look_from: Vec3A,
+    pub viewport_u: Vec3A,
+    pub viewport_v: Vec3A,
+    pub viewport_upper_left: Vec3A,
+    defocus_angle: f32,
+    defocus_disk_u: Vec3A,
+    defocus_disk_v: Vec3A,
+    time: Uniform<f32>
 }
 
 impl Camera {
     #[allow(clippy::too_many_arguments)]
     pub fn new(
-        look_from: DVec3,
-        look_at: DVec3,
-        up: DVec3,
+        look_from: Vec3A,
+        look_at: Vec3A,
+        up: Vec3A,
 
-        fov: f64,
-        aspect_ratio: f64,
+        fov: f32,
+        aspect_ratio: f32,
 
-        defocus_angle: f64,
-        focus_distance: f64,
+        defocus_angle: f32,
+        focus_distance: f32,
 
-        time_min: f64,
-        time_max: f64,
+        time_min: f32,
+        time_max: f32,
     ) -> Self {
         let theta = fov.to_radians() / 2.;
         let h = theta.tan();
@@ -64,7 +64,7 @@ impl Camera {
         }
     }
 
-    pub fn get_ray(&self, viewport_pos: DVec3, rng: &RandomNumberGenerator) -> Ray {
+    pub fn get_ray(&self, viewport_pos: Vec3A, rng: &RandomNumberGenerator) -> Ray {
         let origin = if self.defocus_angle <= 0. {
             self.look_from
         } else {
@@ -80,7 +80,7 @@ impl Camera {
         )
     }
 
-    pub fn time(&self) -> f64 {
+    pub fn time(&self) -> f32 {
             let mut rng = thread_rng();
             self.time.sample(&mut rng)
     }

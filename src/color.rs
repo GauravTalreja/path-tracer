@@ -1,10 +1,10 @@
 use image::Rgb;
-pub type Color = glam::DVec3;
+pub type Color = glam::Vec3A;
 
 pub fn hex_color(x: u32) -> Color {
-    let r = ((x >> 16) & 0xff) as f64 / 255.0;
-    let g = ((x >> 8) & 0xff) as f64 / 255.0;
-    let b = (x & 0xff) as f64 / 255.0;
+    let r = ((x >> 16) & 0xff) as f32 / 255.0;
+    let g = ((x >> 8) & 0xff) as f32 / 255.0;
+    let b = (x & 0xff) as f32 / 255.0;
     Color::new(r.powi(2), g.powi(2), b.powi(2))
 }
 

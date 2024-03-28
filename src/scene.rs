@@ -14,8 +14,8 @@ pub struct Scene {
 impl Scene {
     pub fn new(
         hittables: &[Arc<dyn Hittable>],
-        time_min: f64,
-        time_max: f64,
+        time_min: f32,
+        time_max: f32,
         background: Color,
     ) -> Self {
         let mut hittables: Vec<(Arc<dyn Hittable>, BoundingBox)> = hittables
@@ -28,7 +28,7 @@ impl Scene {
         }
     }
 
-    fn closest_hit(&self, ray: &Ray, time_min: f64, time_max: f64) -> Option<HitResult> {
+    fn closest_hit(&self, ray: &Ray, time_min: f32, time_max: f32) -> Option<HitResult> {
         self.bvh.hit(ray, time_min, time_max)
     }
 
@@ -37,8 +37,8 @@ impl Scene {
         ray: &Ray,
         depth: u64,
         rng: &RandomNumberGenerator,
-        time_min: f64,
-        time_max: f64,
+        time_min: f32,
+        time_max: f32,
     ) -> Color {
         if depth == 0 {
             return Color::ZERO;

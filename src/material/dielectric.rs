@@ -2,7 +2,7 @@ use super::prelude::*;
 use rand::{prelude::Distribution, thread_rng};
 
 pub struct Dielectric {
-    pub refractive_index: f64,
+    pub refractive_index: f32,
 }
 
 impl Material for Dielectric {
@@ -36,7 +36,7 @@ impl Material for Dielectric {
     }
 }
 
-fn reflectance(cos_theta: f64, refraction_ratio: f64) -> f64 {
+fn reflectance(cos_theta: f32, refraction_ratio: f32) -> f32 {
     let r0 = (1. - refraction_ratio) / (1. + refraction_ratio);
     let r0 = r0 * r0;
     r0 + (1. - r0) * (1. - cos_theta).powi(5)

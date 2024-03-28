@@ -1,21 +1,21 @@
 use super::prelude::*;
-use std::f64::consts::PI;
+use std::f32::consts::PI;
 
 pub struct Sphere {
-    radius: f64,
+    radius: f32,
     center: DVec3,
     material: Arc<dyn Material>,
     moving_sphere: Option<MovingSphere>,
 }
 
 pub struct MovingSphere {
-    pub time_min: f64,
+    pub time_min: f32,
     pub center: DVec3,
-    pub time_max: f64,
+    pub time_max: f32,
 }
 
 impl Sphere {
-    pub fn new(radius: f64, center: DVec3, material: Arc<dyn Material>) -> Self {
+    pub fn new(radius: f32, center: DVec3, material: Arc<dyn Material>) -> Self {
         Sphere {
             radius,
             center,
@@ -25,11 +25,11 @@ impl Sphere {
     }
 
     pub fn new_moving(
-        radius: f64,
+        radius: f32,
         center: DVec3,
         material: Arc<dyn Material>,
-        time_min: f64,
-        time_max: f64,
+        time_min: f32,
+        time_max: f32,
         center_final: DVec3,
     ) -> Self {
         Sphere {
@@ -44,7 +44,7 @@ impl Sphere {
         }
     }
 
-    pub fn center(&self, time: f64) -> DVec3 {
+    pub fn center(&self, time: f32) -> DVec3 {
         match self.moving_sphere {
             Some(MovingSphere {
                 time_min,
@@ -57,17 +57,17 @@ impl Sphere {
         }
     }
 
-    pub fn get_uv(point: &DVec3) -> (f64, f64) {
+    pub fn get_uv(point: &DVec3) -> (f32, f32) {
         let phi = (-point.z).atan2(point.x) + PI;
         let theta = (-point.y).acos();
-        let u = 1. - phi / (2. * PI);
+        let u = phi / (2. * PI);
         let v = theta / PI;
         (u, v)
     }
 }
 
 impl Hittable for Sphere {
-    fn hit(&self, ray: &Ray, time_min: f64, time_max: f64) -> Option<HitResult> {
+    fn hit(&self, ray: &Ray, time_min: f32, time_max: f32) -> Option<HitResult> {
         let center = self.center(ray.time());
         let oc = ray.origin() - center;
         let a = ray.direction().length_squared();
@@ -100,7 +100,7 @@ impl Hittable for Sphere {
 }
 
 impl Bounded for Sphere {
-    fn bounding_box(&self, time_min: f64, time_max: f64) -> BoundingBox {
+    fn bounding_box(&self, time_min: f32, time_max: f32) -> BoundingBox {
         match self.moving_sphere {
             Some(_) => BoundingBox::surrounding(&[
                 &bounding_box(self.center(time_min), self.radius),
@@ -111,7 +111,7 @@ impl Bounded for Sphere {
     }
 }
 
-fn bounding_box(center: DVec3, radius: f64) -> BoundingBox {
+fn bounding_box(center: DVec3, radius: f32) -> BoundingBox {
     BoundingBox {
         minimum: center - DVec3::splat(radius),
         maximum: center + DVec3::splat(radius),

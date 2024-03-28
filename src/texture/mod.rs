@@ -1,12 +1,12 @@
 mod prelude {
     pub use super::Texture;
     pub use crate::color::Color;
-    pub use glam::DVec3;
+    pub use crate::Vec3A;
 }
 use prelude::*;
 
 pub trait Texture: Send + Sync {
-    fn color(&self, point: &DVec3, u: &f64, v: &f64) -> Color;
+    fn color(&self, point: &Vec3A, u: &f32, v: &f32) -> Color;
 }
 
 mod solid_color;

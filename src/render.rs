@@ -1,4 +1,4 @@
-use glam::DVec3;
+use crate::Vec3A;
 use super::{camera::Camera, color::*, rng::RandomNumberGenerator, scene::Scene};
 use image::{Rgb, RgbImage};
 use indicatif::ParallelProgressIterator;
@@ -10,9 +10,9 @@ pub struct Render {
     height: u32,
     samples_per_pixel: u64,
     camera: Camera,
-    pixel_delta_u : DVec3,
-    pixel_delta_v : DVec3,
-    pixel00_loc : DVec3,
+    pixel_delta_u : Vec3A,
+    pixel_delta_v : Vec3A,
+    pixel00_loc : Vec3A,
     scene: Scene,
     rng: RandomNumberGenerator,
 }
@@ -26,8 +26,8 @@ impl Render {
         camera: Camera,
     ) -> Self {
         let rng = RandomNumberGenerator::new();
-        let pixel_delta_u = camera.viewport_u / width as f64;
-        let pixel_delta_v = camera.viewport_v / height as f64;
+        let pixel_delta_u = camera.viewport_u / width as f32;
+        let pixel_delta_v = camera.viewport_v / height as f32;
         let pixel00_loc = camera.viewport_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
         Render {
             width,
@@ -45,11 +45,10 @@ impl Render {
     fn get_color(&self, x: u32, y: u32) -> Rgb<u8> {
         to_rgb(
             &((0..self.samples_per_pixel)
-                .into_par_iter()
                 .map(|_| {
                     let mut rng = thread_rng();
                     
-                    let pixel_center = self.pixel00_loc + (x as f64 * self.pixel_delta_u) + (y as f64 * self.pixel_delta_v);
+                    let pixel_center = self.pixel00_loc + (x as f32 * self.pixel_delta_u) + (y as f32 * self.pixel_delta_v);
                     
                     let px = -0.5 + self.rng.uniform_0_1.sample(&mut rng);
                     let py = -0.5 + self.rng.uniform_0_1.sample(&mut rng);
@@ -58,10 +57,10 @@ impl Render {
                     let pixel_sample = pixel_center + pixel_sample_square;
                     
                     let r = self.camera.get_ray(pixel_sample, &self.rng);
-                    self.scene.color(&r, 50, &self.rng, 0.001, f64::INFINITY)
+                    self.scene.color(&r, 50, &self.rng, 0.001, f32::INFINITY)
                 })
                 .sum::<Color>()
-                / self.samples_per_pixel as f64),
+                / self.samples_per_pixel as f32),
         )
     }
 

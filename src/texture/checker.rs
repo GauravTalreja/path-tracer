@@ -8,7 +8,7 @@ pub struct Checker {
 }
 
 impl Texture for Checker {
-    fn color(&self, point: &DVec3, u: &f64, v: &f64) -> Color {
+    fn color(&self, point: &Vec3A, u: &f32, v: &f32) -> Color {
         match (10. * point.x).sin() * (10. * point.y).sin() * (10. * point.z).sin() < 0. {
             true => self.odd.color(point, u, v),
             false => self.even.color(point, u, v),

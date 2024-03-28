@@ -2,7 +2,7 @@ use super::prelude::*;
 
 pub struct Metal {
     pub albedo: Color,
-    pub fuzz: f64,
+    pub fuzz: f32,
 }
 
 impl Material for Metal {

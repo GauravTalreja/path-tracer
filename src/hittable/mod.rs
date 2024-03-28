@@ -2,7 +2,7 @@ mod prelude {
     pub use crate::hittable::*;
     pub use crate::material::Material;
     pub use crate::ray::{HitResult, Ray};
-    pub use glam::DVec3;
+    pub type DVec3 = glam::Vec3A;
     pub use std::sync::Arc;
     #[allow(unused_imports)] // this is supposedly unused but doesn't compile when excluded
     pub use rand::{thread_rng, Rng};
@@ -11,11 +11,11 @@ use prelude::*;
 
 
 pub trait Bounded {
-    fn bounding_box(&self, time_min: f64, time_max: f64) -> BoundingBox;
+    fn bounding_box(&self, time_min: f32, time_max: f32) -> BoundingBox;
 }
 
 pub trait Hittable: Bounded + Send + Sync {
-    fn hit(&self, ray: &Ray, time_min: f64, time_max: f64) -> Option<HitResult>;
+    fn hit(&self, ray: &Ray, time_min: f32, time_max: f32) -> Option<HitResult>;
 }
 
 mod sphere;
@@ -36,7 +36,7 @@ pub struct BoundingBox {
 impl BoundingBox {
     pub fn surrounding(bounding_boxes: &[&Self]) -> BoundingBox {
         let (minimum, maximum) = bounding_boxes.iter().fold(
-            (DVec3::splat(f64::INFINITY), DVec3::splat(f64::NEG_INFINITY)),
+            (DVec3::splat(f32::INFINITY), DVec3::splat(f32::NEG_INFINITY)),
             |(minimum_acc, maximum_acc), BoundingBox { minimum, maximum }| {
                 (minimum_acc.min(*minimum), maximum_acc.max(*maximum))
             },
@@ -47,7 +47,7 @@ impl BoundingBox {
 
     /* Alexander MajeArcik, Cyril Crassin, Peter Shirley, and Morgan McGuire, A Ray-Box Intersection Algorithm and Efficient Dynamic Voxel Rendering, Journal of Computer Graphics Techniques (JCGT), vol. 7, no. 3, 66-81, 2018
     Available online http://jcgt.org/published/0007/03/04/ */
-    pub fn hit(&self, ray: &Ray, time_min: f64, time_max: f64) -> bool {
+    pub fn hit(&self, ray: &Ray, time_min: f32, time_max: f32) -> bool {
         let ray_origin = ray.origin();
         let inv_ray_direction = ray.direction().recip();
         let t0 = (self.minimum - ray_origin) * inv_ray_direction;
@@ -69,8 +69,8 @@ pub struct BvhNode {
 impl BvhNode {
     pub fn new(
         hittables: &mut [(Arc<dyn Hittable>, BoundingBox)],
-        time_min: f64,
-        time_max: f64,
+        time_min: f32,
+        time_max: f32,
     ) -> Self {
         match hittables.len() {
             1 => {
@@ -123,13 +123,13 @@ impl BvhNode {
 }
 
 impl Bounded for BvhNode {
-    fn bounding_box(&self, _time_min: f64, _time_max: f64) -> BoundingBox {
+    fn bounding_box(&self, _time_min: f32, _time_max: f32) -> BoundingBox {
         self.bounding_box.clone()
     }
 }
 
 impl Hittable for BvhNode {
-    fn hit(&self, ray: &Ray, time_min: f64, time_max: f64) -> Option<HitResult> {
+    fn hit(&self, ray: &Ray, time_min: f32, time_max: f32) -> Option<HitResult> {
         if self.bounding_box.hit(ray, time_min, time_max) {
             let left = self.left.hit(ray, time_min, time_max);
             let right = match left {

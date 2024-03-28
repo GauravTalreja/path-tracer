@@ -5,7 +5,7 @@ pub struct Quad {
     u: DVec3,
     v: DVec3,
     normal: DVec3,
-    d: f64,
+    d: f32,
     material: Arc<dyn Material>,
 }
 
@@ -50,7 +50,7 @@ impl Quad {
 }
 
 impl Hittable for Quad {
-    fn hit(&self, ray: &Ray, time_min: f64, time_max: f64) -> Option<HitResult> {
+    fn hit(&self, ray: &Ray, time_min: f32, time_max: f32) -> Option<HitResult> {
         let denom = self.normal.dot(ray.direction());
         if denom.abs() < 1e-8 {
             return None;
@@ -91,7 +91,7 @@ impl Hittable for Quad {
 }
 
 impl Bounded for Quad {
-    fn bounding_box(&self, _time_min: f64, _time_max: f64) -> BoundingBox {
+    fn bounding_box(&self, _time_min: f32, _time_max: f32) -> BoundingBox {
         let vertices = [self.q, self.q + self.u, self.q + self.v, self.q + self.u + self.v];
         let mut min = vertices[0];
         let mut max = vertices[0];

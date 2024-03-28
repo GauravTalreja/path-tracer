@@ -19,24 +19,24 @@ impl Scene {
         let mut hittables: Vec<Arc<dyn hittable::Hittable>> = vec![
             Arc::new(hittable::Sphere::new(
                 1000.,
-                DVec3::new(0., -1000., 0.),
+                Vec3A::new(0., -1000., 0.),
                 ground,
             )),
             Arc::new(hittable::Sphere::new(
                 1.,
-                DVec3::new(0., 1., 0.),
+                Vec3A::new(0., 1., 0.),
                 glass.clone(),
             )),
-            Arc::new(hittable::Sphere::new(1., DVec3::new(-4., 1., 0.), mat2)),
-            Arc::new(hittable::Sphere::new(1., DVec3::new(4., 1., 0.), mat3)),
+            Arc::new(hittable::Sphere::new(1., Vec3A::new(-4., 1., 0.), mat2)),
+            Arc::new(hittable::Sphere::new(1., Vec3A::new(4., 1., 0.), mat3)),
         ];
 
         for a in -n..n {
             for b in -n..n {
-                let center = DVec3::new(
-                    a as f64 + 0.9 * rng.uniform_0_1.sample(thread_rng),
+                let center = Vec3A::new(
+                    a as f32 + 0.9 * rng.uniform_0_1.sample(thread_rng),
                     0.2,
-                    b as f64 + 0.9 * rng.uniform_0_1.sample(thread_rng),
+                    b as f32 + 0.9 * rng.uniform_0_1.sample(thread_rng),
                 );
                 let random = rng.uniform_0_1.sample(thread_rng);
                 if random < 0.8 {
@@ -44,7 +44,7 @@ impl Scene {
                     let material = Arc::new(material::Lambertian::new(color));
                     hittables.push(Arc::new(hittable::Sphere::new(0.2, center, material)));
                 } else if random < 0.95 {
-                    let albedo = DVec3::new(
+                    let albedo = Vec3A::new(
                         uniform_0_5_1.sample(thread_rng),
                         uniform_0_5_1.sample(thread_rng),
                         uniform_0_5_1.sample(thread_rng),
@@ -64,8 +64,8 @@ impl Scene {
     pub fn random_moving_spheres(
         n: i64,
         rng: RandomNumberGenerator,
-        time_min: f64,
-        time_max: f64,
+        time_min: f32,
+        time_max: f32,
     ) -> Scene {
         let thread_rng = &mut thread_rng();
         let uniform_0_0_5 = Uniform::new(0., 0.5);
@@ -83,31 +83,31 @@ impl Scene {
         let mut hittables: Vec<Arc<dyn hittable::Hittable>> = vec![
             Arc::new(hittable::Sphere::new(
                 1000.,
-                DVec3::new(0., -1000., 0.),
+                Vec3A::new(0., -1000., 0.),
                 ground,
             )),
             Arc::new(hittable::Sphere::new(
                 1.,
-                DVec3::new(0., 1., 0.),
+                Vec3A::new(0., 1., 0.),
                 glass.clone(),
             )),
-            Arc::new(hittable::Sphere::new(1., DVec3::new(-4., 1., 0.), mat2)),
-            Arc::new(hittable::Sphere::new(1., DVec3::new(4., 1., 0.), mat3)),
+            Arc::new(hittable::Sphere::new(1., Vec3A::new(-4., 1., 0.), mat2)),
+            Arc::new(hittable::Sphere::new(1., Vec3A::new(4., 1., 0.), mat3)),
         ];
 
         for a in -n..n {
             for b in -n..n {
-                let center = DVec3::new(
-                    a as f64 + 0.9 * rng.uniform_0_1.sample(thread_rng),
+                let center = Vec3A::new(
+                    a as f32 + 0.9 * rng.uniform_0_1.sample(thread_rng),
                     0.2,
-                    b as f64 + 0.9 * rng.uniform_0_1.sample(thread_rng),
+                    b as f32 + 0.9 * rng.uniform_0_1.sample(thread_rng),
                 );
                 let random = rng.uniform_0_1.sample(thread_rng);
                 if random < 0.8 {
                     let color = rng.color() * rng.color();
                     let material = Arc::new(material::Lambertian::new(color));
                     let center_final =
-                        center + DVec3::new(0., uniform_0_0_5.sample(thread_rng), 0.);
+                        center + Vec3A::new(0., uniform_0_0_5.sample(thread_rng), 0.);
                     hittables.push(Arc::new(hittable::Sphere::new_moving(
                         0.2,
                         center,
@@ -117,7 +117,7 @@ impl Scene {
                         center_final,
                     )));
                 } else if random < 0.95 {
-                    let albedo = DVec3::new(
+                    let albedo = Vec3A::new(
                         uniform_0_5_1.sample(thread_rng),
                         uniform_0_5_1.sample(thread_rng),
                         uniform_0_5_1.sample(thread_rng),

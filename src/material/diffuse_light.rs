@@ -22,7 +22,7 @@ impl Material for DiffuseLight {
         None
     }
 
-    fn emitted(&self, point: &DVec3, u: &f64, v: &f64) -> Color {
+    fn emitted(&self, point: &Vec3A, u: &f32, v: &f32) -> Color {
         self.emit.color(point, u, v)
     }
 }

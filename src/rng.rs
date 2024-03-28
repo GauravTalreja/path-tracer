@@ -1,11 +1,11 @@
-use glam::DVec3;
+use crate::Vec3A;
 use rand::{distributions::Uniform, prelude::Distribution, rngs::ThreadRng, thread_rng};
 
 use crate::Color;
 
 pub struct RandomNumberGenerator {
-    pub uniform_0_1: Uniform<f64>,
-    pub uniform_minus_1_1: Uniform<f64>,
+    pub uniform_0_1: Uniform<f32>,
+    pub uniform_minus_1_1: Uniform<f32>,
 }
 
 impl RandomNumberGenerator {
@@ -15,16 +15,16 @@ impl RandomNumberGenerator {
             uniform_minus_1_1: Uniform::new(-1., 1.),
         }
     }
-    pub fn in_unit_cube(&self) -> DVec3 {
+    pub fn in_unit_cube(&self) -> Vec3A {
         let mut rng = thread_rng();
-        DVec3 {
+        Vec3A {
             x: self.uniform_minus_1_1.sample(&mut rng),
             y: self.uniform_minus_1_1.sample(&mut rng),
             z: self.uniform_minus_1_1.sample(&mut rng),
         }
     }
 
-    pub fn in_unit_sphere(&self) -> DVec3 {
+    pub fn in_unit_sphere(&self) -> Vec3A {
         let mut random = self.in_unit_cube();
         while random.length_squared() >= 1. {
             random = self.in_unit_cube();
@@ -32,7 +32,7 @@ impl RandomNumberGenerator {
         random
     }
 
-    pub fn in_hemishphere(&self, normal: &DVec3) -> DVec3 {
+    pub fn in_hemishphere(&self, normal: &Vec3A) -> Vec3A {
         let in_unit_sphere = self.in_unit_sphere();
         if in_unit_sphere.dot(*normal) > 0. {
             in_unit_sphere
@@ -41,15 +41,15 @@ impl RandomNumberGenerator {
         }
     }
 
-    fn try_in_unit_disk(&self, rng: &mut ThreadRng) -> DVec3 {
-        DVec3 {
+    fn try_in_unit_disk(&self, rng: &mut ThreadRng) -> Vec3A {
+        Vec3A {
             x: self.uniform_minus_1_1.sample(rng),
             y: self.uniform_minus_1_1.sample(rng),
             z: 0.,
         }
     }
 
-    pub fn in_unit_disk(&self) -> DVec3 {
+    pub fn in_unit_disk(&self) -> Vec3A {
         let mut rng = thread_rng();
         let mut random = self.try_in_unit_disk(&mut rng);
         while random.length_squared() >= 1. {

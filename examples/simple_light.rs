@@ -2,8 +2,8 @@ use path_tracer::*;
 
 const WIDTH: u32 = 1280;
 const HEIGHT: u32 = 720;
-const TIME_MIN: f64 = 0.001;
-const TIME_MAX: f64 = f64::MAX;
+const TIME_MIN: f32 = 0.001;
+const TIME_MAX: f32 = f32::MAX;
 
 fn main() -> Result<(), image::ImageError> {
     let purple = Arc::new(texture::SolidColor::new(hex_color(0x1e1e2e)));
@@ -18,23 +18,23 @@ fn main() -> Result<(), image::ImageError> {
     let hittables: Vec<Arc<dyn hittable::Hittable>> = vec![
         Arc::new(hittable::Sphere::new(
             1000.,
-            DVec3::new(0., -1000., 0.),
+            Vec3A::new(0., -1000., 0.),
             checker.clone(),
         )),
-        Arc::new(hittable::Sphere::new(2., DVec3::new(0., 2., 0.), checker)),
+        Arc::new(hittable::Sphere::new(2., Vec3A::new(0., 2., 0.), checker)),
         Arc::new(hittable::Sphere::new(
             1.5,
-            DVec3::new(0., 6.5, 0.),
+            Vec3A::new(0., 6.5, 0.),
             diffuse_light,
         )),
     ];
     let scene = Scene::new(&hittables, TIME_MIN, TIME_MAX, Color::ZERO);
 
-    let aspect_ratio = WIDTH as f64 / HEIGHT as f64;
+    let aspect_ratio = WIDTH as f32 / HEIGHT as f32;
     let camera = Camera::new(
-        DVec3::new(23., 3., 6.),
-        DVec3::new(0., 2., 0.),
-        DVec3::new(0., 1., 0.),
+        Vec3A::new(23., 3., 6.),
+        Vec3A::new(0., 2., 0.),
+        Vec3A::new(0., 1., 0.),
         20.,
         aspect_ratio,
         0.,
