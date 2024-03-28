@@ -3,19 +3,19 @@ use std::f32::consts::PI;
 
 pub struct Sphere {
     radius: f32,
-    center: DVec3,
+    center: Vec3A,
     material: Arc<dyn Material>,
     moving_sphere: Option<MovingSphere>,
 }
 
 pub struct MovingSphere {
     pub time_min: f32,
-    pub center: DVec3,
+    pub center: Vec3A,
     pub time_max: f32,
 }
 
 impl Sphere {
-    pub fn new(radius: f32, center: DVec3, material: Arc<dyn Material>) -> Self {
+    pub fn new(radius: f32, center: Vec3A, material: Arc<dyn Material>) -> Self {
         Sphere {
             radius,
             center,
@@ -26,11 +26,11 @@ impl Sphere {
 
     pub fn new_moving(
         radius: f32,
-        center: DVec3,
+        center: Vec3A,
         material: Arc<dyn Material>,
         time_min: f32,
         time_max: f32,
-        center_final: DVec3,
+        center_final: Vec3A,
     ) -> Self {
         Sphere {
             radius,
@@ -44,7 +44,7 @@ impl Sphere {
         }
     }
 
-    pub fn center(&self, time: f32) -> DVec3 {
+    pub fn center(&self, time: f32) -> Vec3A {
         match self.moving_sphere {
             Some(MovingSphere {
                 time_min,
@@ -57,7 +57,7 @@ impl Sphere {
         }
     }
 
-    pub fn get_uv(point: &DVec3) -> (f32, f32) {
+    pub fn get_uv(point: &Vec3A) -> (f32, f32) {
         let phi = (-point.z).atan2(point.x) + PI;
         let theta = (-point.y).acos();
         let u = phi / (2. * PI);
@@ -86,7 +86,7 @@ impl Hittable for Sphere {
             }
         }
         let point = ray.at(time);
-        let normal: DVec3 = (point - center) / self.radius;
+        let normal: Vec3A = (point - center) / self.radius;
         let (u, v) = Sphere::get_uv(&normal);
         Some(HitResult {
             normal,
@@ -111,9 +111,9 @@ impl Bounded for Sphere {
     }
 }
 
-fn bounding_box(center: DVec3, radius: f32) -> BoundingBox {
+fn bounding_box(center: Vec3A, radius: f32) -> BoundingBox {
     BoundingBox {
-        minimum: center - DVec3::splat(radius),
-        maximum: center + DVec3::splat(radius),
+        minimum: center - Vec3A::splat(radius),
+        maximum: center + Vec3A::splat(radius),
     }
 }

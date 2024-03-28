@@ -1,16 +1,16 @@
 use super::prelude::*;
 
 pub struct Quad {
-    q: DVec3,
-    u: DVec3,
-    v: DVec3,
-    normal: DVec3,
+    q: Vec3A,
+    u: Vec3A,
+    v: Vec3A,
+    normal: Vec3A,
     d: f32,
     material: Arc<dyn Material>,
 }
 
 impl Quad {
-    pub fn new(q: DVec3, u: DVec3, v: DVec3, material: Arc<dyn Material>) -> Self {
+    pub fn new(q: Vec3A, u: Vec3A, v: Vec3A, material: Arc<dyn Material>) -> Self {
         let normal = (u.cross(v)).normalize();
         let d = normal.dot(q);
 
@@ -24,25 +24,25 @@ impl Quad {
         }
     }
 
-    pub fn new_box(a: DVec3, b: DVec3, material: Arc<dyn Material>) -> Vec<Quad> {
-        let min = DVec3::new(a.x.min(b.x), a.y.min(b.y), a.z.min(b.z));
-        let max = DVec3::new(a.x.max(b.x), a.y.max(b.y), a.z.max(b.z));
+    pub fn new_box(a: Vec3A, b: Vec3A, material: Arc<dyn Material>) -> Vec<Quad> {
+        let min = Vec3A::new(a.x.min(b.x), a.y.min(b.y), a.z.min(b.z));
+        let max = Vec3A::new(a.x.max(b.x), a.y.max(b.y), a.z.max(b.z));
 
-        let dx = DVec3::new(max.x - min.x, 0.0, 0.0);
-        let dy = DVec3::new(0.0, max.y - min.y, 0.0);
-        let dz = DVec3::new(0.0, 0.0, max.z - min.z);
+        let dx = Vec3A::new(max.x - min.x, 0.0, 0.0);
+        let dy = Vec3A::new(0.0, max.y - min.y, 0.0);
+        let dz = Vec3A::new(0.0, 0.0, max.z - min.z);
 
         vec![
             // Front (XY plane)
             Quad::new(min, dx, dy, material.clone()),
             // Right (YZ plane)
-            Quad::new(DVec3::new(max.x, min.y, min.z), dy, dz, material.clone()),
+            Quad::new(Vec3A::new(max.x, min.y, min.z), dy, dz, material.clone()),
             // Back (XY plane)
-            Quad::new(DVec3::new(min.x, min.y, min.z), dx, dy, material.clone()),
+            Quad::new(Vec3A::new(min.x, min.y, min.z), dx, dy, material.clone()),
             // Left (YZ plane)
             Quad::new(min, dy, dz, material.clone()),
             // Top (XZ plane)
-            Quad::new(DVec3::new(min.x, max.y, min.z), dx, dz, material.clone()),
+            Quad::new(Vec3A::new(min.x, max.y, min.z), dx, dz, material.clone()),
             // Bottom (XZ plane)
             Quad::new(min, dx, dz, material.clone()),
         ]

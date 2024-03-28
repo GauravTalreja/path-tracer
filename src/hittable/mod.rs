@@ -2,7 +2,7 @@ mod prelude {
     pub use crate::hittable::*;
     pub use crate::material::Material;
     pub use crate::ray::{HitResult, Ray};
-    pub type DVec3 = glam::Vec3A;
+    pub use crate::Vec3A;
     pub use std::sync::Arc;
     #[allow(unused_imports)] // this is supposedly unused but doesn't compile when excluded
     pub use rand::{thread_rng, Rng};
@@ -29,14 +29,14 @@ pub use transform::Transform;
 
 #[derive(Copy, Clone)]
 pub struct BoundingBox {
-    pub minimum: DVec3,
-    pub maximum: DVec3,
+    pub minimum: Vec3A,
+    pub maximum: Vec3A,
 }
 
 impl BoundingBox {
     pub fn surrounding(bounding_boxes: &[&Self]) -> BoundingBox {
         let (minimum, maximum) = bounding_boxes.iter().fold(
-            (DVec3::splat(f32::INFINITY), DVec3::splat(f32::NEG_INFINITY)),
+            (Vec3A::splat(f32::INFINITY), Vec3A::splat(f32::NEG_INFINITY)),
             |(minimum_acc, maximum_acc), BoundingBox { minimum, maximum }| {
                 (minimum_acc.min(*minimum), maximum_acc.max(*maximum))
             },
