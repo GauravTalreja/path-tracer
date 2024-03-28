@@ -19,7 +19,7 @@ impl Material for Lambertian {
     ) -> Option<Scatter> {
         let direction = rng.in_hemishphere(normal);
         let ray = Ray::new(*point, direction, ray.time());
-        let attenuation = self.albedo.color(point, u, v);
+        let attenuation = self.albedo.color(point, *u, *v);
         Some(Scatter { ray, attenuation })
     }
 }

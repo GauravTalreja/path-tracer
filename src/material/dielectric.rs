@@ -5,6 +5,12 @@ pub struct Dielectric {
     pub refractive_index: f32,
 }
 
+impl Dielectric {
+    pub fn new(refractive_index: f32) -> Self {
+        Self { refractive_index }
+    }
+}
+
 impl Material for Dielectric {
     fn scatter(
         &self,

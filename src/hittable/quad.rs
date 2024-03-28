@@ -104,3 +104,31 @@ impl Bounded for Quad {
         BoundingBox { minimum: min, maximum: max }
     }
 }
+
+pub struct Box {
+    sides: Vec<Quad>,
+    bb: BoundingBox
+}
+
+impl Box {
+    pub fn new(min: Vec3A, max: Vec3A, material: Arc<dyn Material>) -> Self {
+        Box {
+            sides: Quad::new_box(min, max, material),
+            bb: BoundingBox { minimum: min, maximum: max }
+        }
+    }
+}
+
+impl Hittable for Box {
+    fn hit(&self, ray: &Ray, time_min: f32, time_max: f32) -> Option<HitResult> {
+        self.sides.iter()
+            .filter_map(|side| side.hit(ray, time_min, time_max))
+            .min_by(|hit1, hit2| hit1.time.partial_cmp(&hit2.time).unwrap())
+    }
+}
+
+impl Bounded for Box {
+    fn bounding_box(&self, _: f32, _: f32) -> BoundingBox {
+        self.bb
+    }
+}

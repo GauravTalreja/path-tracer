@@ -19,7 +19,7 @@ pub trait Material: Send + Sync {
         rng: &RandomNumberGenerator,
     ) -> Option<Scatter>;
 
-    fn emitted(&self, _point: &Vec3A, _u: &f32, _v: &f32) -> Color {
+    fn emitted(&self, _point: &Vec3A, _u: f32, _v: f32) -> Color {
         Color::ZERO
     }
 }
@@ -39,6 +39,10 @@ mod metal;
 pub use metal::Metal;
 
 mod diffuse_light;
+
+mod isotropic;
+pub use isotropic::Isotropic;
+
 pub use diffuse_light::DiffuseLight;
 
 pub fn refract(uv: Vec3A, normal: Vec3A, refraction_ratio: f32) -> Vec3A {

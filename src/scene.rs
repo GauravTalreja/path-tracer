@@ -47,7 +47,7 @@ impl Scene {
             Some(hit_result) => {
                 let material = hit_result.material.upgrade().unwrap();
                 let HitResult { u, v, point, .. } = hit_result;
-                let emitted = material.emitted(&point, &u, &v);
+                let emitted = material.emitted(&point, u, v);
                 match material.scatter(ray, &hit_result, rng) {
                     Some(Scatter { ray, attenuation }) => {
                         emitted + attenuation * self.color(&ray, depth - 1, rng, time_min, time_max)

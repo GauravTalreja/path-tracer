@@ -15,29 +15,27 @@ fn main() -> Result<(), image::ImageError> {
     let box1_max = Vec3A::new(430., 330., 460.);
     let box1_center = (box1_min + box1_max) * 0.5;
     let box1_rot = Quat::from_rotation_y(15.0_f32.to_radians());
-    let box1= hittable::Quad::new_box(box1_min, box1_max, white.clone()).into_iter()
-        .map::<Arc<dyn hittable::Hittable>, _>(|r|
-            Arc::new(hittable::Transform::new(Arc::new(r), box1_rot, box1_center)));
+    let box1= hittable::Box::new(box1_min, box1_max, white.clone());
+    let box1 = Arc::new(hittable::Transform::new(Arc::new(box1), box1_rot, box1_center));
 
     let box2_min = Vec3A::new(130., 0., 65.);
     let box2_max = Vec3A::new(295., 165., 130.);
     let box2_center = (box2_min + box2_max) * 0.5;
     let box2_rot = Quat::from_rotation_y((-18.0_f32).to_radians());
-    let box2 = hittable::Quad::new_box(box2_min, box2_max, white.clone()).into_iter()
-        .map::<Arc<dyn hittable::Hittable>, _>(|r|
-            Arc::new(hittable::Transform::new(Arc::new(r), box2_rot, box2_center)));
+    let box2= hittable::Box::new(box2_min, box2_max, white.clone());
+    let box2 = Arc::new(hittable::Transform::new(Arc::new(box2), box2_rot, box2_center));
 
 
-    let mut hittables: Vec<Arc<dyn hittable::Hittable>> = vec![
+    let hittables: Vec<Arc<dyn hittable::Hittable>> = vec![
         Arc::new(hittable::Quad::new(Vec3A::new(555.0, 0.0, 0.0), Vec3A::new(0.0, 555.0, 0.0), Vec3A::new(0.0, 0.0, 555.0), green.clone())),
         Arc::new(hittable::Quad::new(Vec3A::new(0.0, 0.0, 0.0), Vec3A::new(0.0, 555.0, 0.0), Vec3A::new(0.0, 0.0, 555.0), red.clone())),
         Arc::new(hittable::Quad::new(Vec3A::new(343.0, 554.0, 332.0), Vec3A::new(-130.0, 0.0, 0.0), Vec3A::new(0.0, 0.0, -105.0), light.clone())),
         Arc::new(hittable::Quad::new(Vec3A::new(0.0, 0.0, 0.0), Vec3A::new(555.0, 0.0, 0.0), Vec3A::new(0.0, 0.0, 555.0), white.clone())),
         Arc::new(hittable::Quad::new(Vec3A::new(555.0, 555.0, 555.0), Vec3A::new(-555.0, 0.0, 0.0), Vec3A::new(0.0, 0.0, -555.0), white.clone())),
         Arc::new(hittable::Quad::new(Vec3A::new(0.0, 0.0, 555.0), Vec3A::new(555.0, 0.0, 0.0), Vec3A::new(0.0, 555.0, 0.0), white.clone())),
+        box1,
+        box2
     ];
-    hittables.extend(box1);
-    hittables.extend(box2);
 
 
     let scene = Scene::new(&hittables, TIME_MIN, TIME_MAX, Color::ZERO);

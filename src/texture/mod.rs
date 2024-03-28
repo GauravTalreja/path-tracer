@@ -6,7 +6,7 @@ mod prelude {
 use prelude::*;
 
 pub trait Texture: Send + Sync {
-    fn color(&self, point: &Vec3A, u: &f32, v: &f32) -> Color;
+    fn color(&self, point: &Vec3A, u: f32, v: f32) -> Color;
 }
 
 mod solid_color;

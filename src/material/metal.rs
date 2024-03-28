@@ -5,6 +5,12 @@ pub struct Metal {
     pub fuzz: f32,
 }
 
+impl Metal {
+    pub fn new(albedo: Color, fuzz: f32) -> Self {
+        Self { albedo, fuzz }
+    }
+}
+
 impl Material for Metal {
     fn scatter(
         &self,

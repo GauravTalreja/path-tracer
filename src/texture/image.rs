@@ -22,7 +22,7 @@ impl Image {
 }
 
 impl Texture for Image {
-    fn color(&self, _point: &Vec3A, u: &f32, v: &f32) -> Color {
+    fn color(&self, _point: &Vec3A, u: f32, v: f32) -> Color {
         let (width, height) = (self.width as usize, self.height as usize);
         let u = u.clamp(0., 1.);
         let v = 1. - v.clamp(0., 1.);

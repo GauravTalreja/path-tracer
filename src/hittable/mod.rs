@@ -23,8 +23,12 @@ pub use sphere::Sphere;
 
 mod quad;
 pub use quad::Quad;
+pub use quad::Box;
 
 mod transform;
+mod medium;
+pub use medium::Medium;
+
 pub use transform::Transform;
 
 #[derive(Copy, Clone)]
