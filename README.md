@@ -1,4 +1,4 @@
-| <iframe src="https://player.vimeo.com/video/942603943" width="640" height="360" frameborder="0" allowfullscreen></iframe> |
+| [![](examples/frame_0214.png)](https://vimeo.com/942603943) |
 | :-----------------------------------------------------------------------------------------------------------------------: |
 |                                        _Animation demonstrating various features_                                         |
 |                              `made by generating 720 frames and combining them with ffmpeg`                               |
