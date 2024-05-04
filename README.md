@@ -1,29 +1,34 @@
-| ![](examples/weekend.png)|
-|:--:| 
-| *Lambertian, Metallic and Dielectric Spheres* |
-| `cargo run --release --example weekend` |
+|                  ![](examples/animation.mp4)                   |
+| :------------------------------------------------------------: |
+|           _Animation demonstrating various features_           |
+| `made by generating 720 frames and combining them with ffmpeg` |
 
-| ![](examples/bouncing_spheres.png)|
-|:--:| 
-| *Motion Blur* |
+|           ![](examples/weekend.png)           |
+| :-------------------------------------------: |
+| _Lambertian, Metallic and Dielectric Spheres_ |
+|    `cargo run --release --example weekend`    |
+
+|        ![](examples/bouncing_spheres.png)        |
+| :----------------------------------------------: |
+|                  _Motion Blur_                   |
 | `cargo run --release --example bouncing_spheres` |
 
-| ![](examples/checker.png)|
-|:--:| 
-| *Checker Texture* |
+|        ![](examples/checker.png)        |
+| :-------------------------------------: |
+|            _Checker Texture_            |
 | `cargo run --release --example checker` |
 
-| ![](examples/image_mapping.png)|
-|:--:| 
-| *Image Texture* |
+|        ![](examples/image_mapping.png)        |
+| :-------------------------------------------: |
+|                _Image Texture_                |
 | `cargo run --release --example image_mapping` |
 
-| ![](examples/simple_light.png)|
-|:--:| 
-| *Simple Light* |
+|        ![](examples/simple_light.png)        |
+| :------------------------------------------: |
+|                _Simple Light_                |
 | `cargo run --release --example simple_light` |
 
-| ![](examples/cornell_box.png)|
-|:--:| 
-| *Cornell Box, 200 samples per pixel, Uniform Hemisphere Sampling* |
-| `cargo run --release --example cornell_box` |
+|                   ![](examples/cornell_box.png)                   |
+| :---------------------------------------------------------------: |
+| _Cornell Box, 200 samples per pixel, Uniform Hemisphere Sampling_ |
+|            `cargo run --release --example cornell_box`            |
