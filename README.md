@@ -1,6 +1,6 @@
 | [![](examples/frame_0214.png)](https://vimeo.com/942603943) |
 | :-----------------------------------------------------------------------------------------------------------------------: |
-|                                        _Animation demonstrating various features_                                         |
+|                                        _Animation demonstrating various features (click on the image!)_                                         |
 |                              `made by generating 720 frames and combining them with ffmpeg`                               |
 
 |           ![](examples/weekend.png)           |
