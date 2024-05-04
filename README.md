@@ -1,7 +1,7 @@
-|                  ![](examples/animation.mp4)                   |
-| :------------------------------------------------------------: |
-|           _Animation demonstrating various features_           |
-| `made by generating 720 frames and combining them with ffmpeg` |
+| <iframe src="https://player.vimeo.com/video/942603943" width="640" height="360" frameborder="0" allowfullscreen></iframe> |
+| :-----------------------------------------------------------------------------------------------------------------------: |
+|                                        _Animation demonstrating various features_                                         |
+|                              `made by generating 720 frames and combining them with ffmpeg`                               |
 
 |           ![](examples/weekend.png)           |
 | :-------------------------------------------: |
